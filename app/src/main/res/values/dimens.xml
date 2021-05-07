@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Height bottomAppBar-->
+    <dimen name="height_for_bottom_app_bar">48dp</dimen>
+
+    <!-- Slider thumb -->
+    <dimen name="slider_thumb_radius">6dp</dimen>
+    <dimen name="slider_halo_radius">14dp</dimen>
+
+    <!-- Slider margin -->
+    <dimen name="slider_margin">4dp</dimen>
+</resources>

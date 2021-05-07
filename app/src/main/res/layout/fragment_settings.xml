@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/height_for_bottom_app_bar">
+
+    <TextView
+        android:id="@+id/tv_header_period"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/fg_settings_period_header"
+        android:textColor="@color/light_blue"
+        app:layout_constraintBottom_toTopOf="@+id/tv_val_period"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tv_val_period"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/bg_tv_rounded"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="10"
+        app:layout_constraintBottom_toTopOf="@+id/slider_period"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_header_period" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider_period"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/slider_margin"
+        android:layout_marginEnd="@dimen/slider_margin"
+        android:stepSize="1"
+        android:value="10"
+        android:valueFrom="2"
+        android:valueTo="30"
+        app:haloRadius="@dimen/slider_halo_radius"
+        app:labelBehavior="gone"
+        app:layout_constraintBottom_toTopOf="@+id/tv_header_range"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_val_period"
+        app:thumbRadius="@dimen/slider_thumb_radius"
+        app:tickVisible="false" />
+
+    <TextView
+        android:id="@+id/tv_header_range"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/fg_settings_range_header"
+        android:textColor="@color/light_blue"
+        app:labelBehavior="gone"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slider_period" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/slider_range"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_header_range">
+
+        <TextView
+            android:id="@+id/tv_val_range_min"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bg_tv_rounded"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="19" />
+
+        <TextView
+            android:id="@+id/tv_val_range_max"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_tv_rounded"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="60" />
+    </RelativeLayout>
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/slider_range"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/slider_margin"
+        android:layout_marginEnd="@dimen/slider_margin"
+        android:stepSize="1"
+        android:valueFrom="18"
+        android:valueTo="60"
+        app:haloRadius="@dimen/slider_halo_radius"
+        app:labelBehavior="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:thumbRadius="@dimen/slider_thumb_radius"
+        app:tickVisible="false"
+        app:values="@array/initial_slider_values" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

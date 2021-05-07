@@ -9,7 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProjectCitizens">
-        <activity android:name=".MainActivity">
+        <service
+            android:name=".service.LocalService"
+            android:enabled="true"
+            android:exported="false"></service>
+
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
