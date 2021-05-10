@@ -1,4 +1,4 @@
-package com.loskon.androidprojectcitizens.recycler;
+package com.loskon.androidprojectcitizens.ui.recycler;
 
 import android.view.View;
 import android.widget.TextView;
@@ -14,14 +14,14 @@ import com.loskon.androidprojectcitizens.R;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView title;
+    public TextView fullName;
     public TextView sex;
     public TextView age;
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        title = itemView.findViewById(R.id.tv_card_title);
+        fullName = itemView.findViewById(R.id.tv_card_full_name);
         sex = itemView.findViewById(R.id.tv_card_sex);
         age = itemView.findViewById(R.id.tv_card_age);
     }

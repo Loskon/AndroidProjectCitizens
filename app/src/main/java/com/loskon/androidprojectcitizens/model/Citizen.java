@@ -3,44 +3,36 @@ package com.loskon.androidprojectcitizens.model;
 import java.io.Serializable;
 
 /**
- * Класс модели
+ * Модель
  */
 
 public class Citizen implements Serializable {
 
     private String lastName;
     private String firstName;
-    private int ageVal;
+    private int age;
     private String workName;
     private boolean isMale;
-    private int placeLiving;
-    private boolean car;
+    private String districtName;
+    private boolean isThereCar;
 
     public Citizen() {
-    }
-
-    public String getLastName() {
-        return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public int getAgeVal() {
-        return ageVal;
+    public int getAge() {
+        return age;
     }
 
-    public void setAgeVal(int ageVal) {
-        this.ageVal = ageVal;
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getWorkName() {
@@ -59,20 +51,20 @@ public class Citizen implements Serializable {
         this.isMale = male;
     }
 
-    public int getPlaceLiving() {
-        return placeLiving;
+    public String getDistrictName() {
+        return districtName;
     }
 
-    public void setPlaceLiving(int placeLiving) {
-        this.placeLiving = placeLiving;
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
     }
 
-    public boolean isCar() {
-        return car;
+    public boolean isThereCar() {
+        return isThereCar;
     }
 
-    public void setCar(boolean car) {
-        this.car = car;
+    public void setThereCar(boolean thereCar) {
+        this.isThereCar = thereCar;
     }
 
     public String getFullName() {

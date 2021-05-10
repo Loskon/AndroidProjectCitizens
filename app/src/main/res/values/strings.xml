@@ -1,35 +1,33 @@
 <resources>
     <string name="app_name">Граждане</string>
 
+
     <!-- Fragment -->
     <!-- fragment_settings -->
-    <string name="fg_settings_period_header">Период генерации (P)</string>
-    <string name="fg_settings_range_header">Диапазон возраста (A)</string>
+    <string name="fg_settings_period">Период генерации (P)</string>
+    <string name="fg_settings_range">Диапазон возраста (A)</string>
 
     <!-- fragment_citizen -->
-    <string name="fg_citizen_header"> Дополнительная информация</string>
-    <string name="fg_citizen"> <b>Пол: </b> %1$s</string>
-    <string name="error"><font fgcolor="#ff9a1d1d">Error!</font></string>
-    <string name="pbs_setup_title"><![CDATA[Возраст: %1$s <font fgcolor="#ff123456">brand</font>]]> </string>
-    <string name="try_d"><font color="BLACK">This is blue color words </font> this default color words</string>
-    <string name="some_text"><![CDATA[normal color <font color=\'#06a7eb\'>special color</font>]]></string>
+    <string name="fg_citizen_second_info">Дополнительная информация</string>
+    <string name="fg_citizen_age">Возраст</string>
+    <string name="fg_citizen_sex">Пол</string>
+    <string name="fg_citizen_work">Место работы</string>
+    <string name="fg_citizen_car">Наличие личного автомобиля</string>
+    <string name="fg_citizen_male">Мужской</string>
+    <string name="fg_citizen_female">Женский</string>
+    <string name="fg_citizen_yes">Да</string>
+    <string name="fg_citizen_no">Нет</string>
+
+    <!-- fragment_list_citizens -->
+    <string name="fg_list_empty">Список пуст</string>
+    <string name="fg_list_error">Ошибка! Ну удалось загрузить список</string>
+    <!-- recyclerview items -->
+    <string name="item_sex_male">Пол: мужской</string>
+    <string name="item_sex_female">Пол: женский</string>
+    <string name="Item_age">Возраст: %1$d</string>
+
 
     <!-- Menu -->
     <!-- menu_settings -->
     <string name="menu_settings_open">Настройки</string>
-
-
-    <!-- Shared key -->
-    <string name="key_generation_period">key_generation_period</string>
-    <string name="key_age_range_min">key_age_range_min</string>
-    <string name="key_age_range_max">key_age_range_max</string>
-
-
-    <!-- Other -->
-    <string name="sex_citizen_male">Пол: мужской</string>
-    <string name="sex_citizen_female">Пол: женский</string>
-    <string name="age_citizen">Возраст:</string>
-
-    <string name="sex_citizen">Пол: %1$s</string>
-    <string name="ag_citizen">Возраст: %1$d</string>
 </resources>

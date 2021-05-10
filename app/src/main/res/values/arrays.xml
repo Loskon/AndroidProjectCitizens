@@ -1,5 +1,5 @@
 <resources>
-    <array name="initial_slider_values">
+    <array name="range_slider_val">
         <item>22.0</item>
         <item>35.0</item>
     </array>

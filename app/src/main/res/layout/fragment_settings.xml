@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/fg_settings_period_header"
+        android:text="@string/fg_settings_period"
         android:textColor="@color/light_blue"
         app:layout_constraintBottom_toTopOf="@+id/tv_val_period"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,15 +55,14 @@
 
     <TextView
         android:id="@+id/tv_header_range"
-        android:layout_width="411dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/fg_settings_range_header"
+        android:text="@string/fg_settings_range"
         android:textColor="@color/light_blue"
         app:labelBehavior="gone"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/slider_period" />
 
@@ -119,6 +118,6 @@
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
         app:thumbRadius="@dimen/slider_thumb_radius"
         app:tickVisible="false"
-        app:values="@array/initial_slider_values" />
+        app:values="@array/range_slider_val" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

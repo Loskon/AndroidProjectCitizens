@@ -4,15 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.loskon.androidprojectcitizens.R;
+import com.loskon.androidprojectcitizens.model.Citizen;
 import com.loskon.androidprojectcitizens.ui.activity.MainActivity;
+import com.loskon.androidprojectcitizens.ui.helper.ResourcesHelper;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
 
 /**
@@ -21,27 +25,33 @@ import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
 
 public class CitizenFragment extends Fragment {
 
-    public static final String ARG_ID = "_id";
+    public static final String ARG_CITIZEN = "arg_citizen";
 
     private MainActivity activity;
     private WidgetsHelper widgetsHelper;
+    private ResourcesHelper resourcesHelper;
 
-    private TextView textView;
     private BottomAppBar bottomAppBar;
+    private TextView tvFullName, tvDistrict, tvAge;
+    private TextView tvSex, tvWork, tvCar;
+    private ImageView imageViewPerson;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_citizen, container, false);
-        initialiseFragmentWidgets(view);
+        initialiseSettingsViews(view);
         return view;
     }
 
-    private void initialiseFragmentWidgets(View view) {
-        textView = (TextView) view.findViewById(R.id.textView8);
-
-        //String customColorText = getResources().getString(R.string.pbs_setup_title);
-        //textView.setText(Html.fromHtml(customColorText));
+    private void initialiseSettingsViews(View view) {
+        imageViewPerson = view.findViewById(R.id.image_view_person);
+        tvFullName = view.findViewById(R.id.tv_full_name);
+        tvDistrict = view.findViewById(R.id.tv_district);
+        tvAge = view.findViewById(R.id.tv_age);
+        tvSex = view.findViewById(R.id.tv_sex);
+        tvWork = view.findViewById(R.id.tv_work);
+        tvCar = view.findViewById(R.id.tv_car);
     }
 
     @Override
@@ -49,37 +59,45 @@ public class CitizenFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         activity = (MainActivity) requireActivity();
 
-        initialiseActivityWidgs();
-        handlersWidgsActivity();
+        initialiseCitizenWidgets();
+        handlersCitizenWidgets();
+    }
 
-        //handlersWidgetsFragment();
+    private void initialiseCitizenWidgets() {
+        widgetsHelper = activity.getWidgetsHelper();
+        resourcesHelper = activity.getResourcesHelper();
+        bottomAppBar = widgetsHelper.getBottomAppBar();
+    }
+
+    private void handlersCitizenWidgets() {
+        bottomAppBar.setNavigationOnClickListener(v -> activity.onBackPressed());
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Bundle args = getArguments();
-        if (args != null) {
-            textView.setText(String.valueOf(args.getInt(ARG_ID)));
+        Bundle bundle = getArguments();
+
+        if (bundle != null) {
+            Citizen citizen = (Citizen) getArguments().getSerializable(ARG_CITIZEN);
+            boolean isMale = citizen.isMale();
+
+            tvFullName.setText(citizen.getFullName());
+            tvDistrict.setText(citizen.getDistrictName());
+            tvAge.setText(String.valueOf(citizen.getAge()));
+            tvSex.setText(resourcesHelper.getResSex(isMale));
+            tvWork.setText(citizen.getWorkName());
+            tvCar.setText(resourcesHelper.getResThereCar(citizen.isThereCar()));
+
+            // Для установки изображения
+            int draw = resourcesHelper.getImageViewPerson(isMale);
+            imageViewPerson.setImageDrawable(ContextCompat.getDrawable(activity, draw));
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        widgetsHelper.isIconFabVisible(false);
-        widgetsHelper.isNavigationIconVisible(true);
-        widgetsHelper.isMenuItemVisible(false);
+        widgetsHelper.isMainActivityItemsVisible(false);
     }
-
-    private void initialiseActivityWidgs() {
-        widgetsHelper = activity.getWidgetsHelper();
-        bottomAppBar = widgetsHelper.getBottomAppBar();
-    }
-
-
-    private void handlersWidgsActivity() {
-        bottomAppBar.setNavigationOnClickListener(v -> activity.onBackPressed());
-    }
-
 }

@@ -1,26 +1,29 @@
 package com.loskon.androidprojectcitizens.ui.activity;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.loskon.androidprojectcitizens.service.LocalService;
 import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.model.Citizen;
-import com.loskon.androidprojectcitizens.recycler.MyRecyclerAdapter;
 import com.loskon.androidprojectcitizens.ui.fragment.CitizenFragment;
 import com.loskon.androidprojectcitizens.ui.fragment.ListCitizensFragment;
 import com.loskon.androidprojectcitizens.ui.fragment.SettingsFragment;
+import com.loskon.androidprojectcitizens.ui.helper.ResourcesHelper;
+import com.loskon.androidprojectcitizens.ui.helper.ServiceHelper;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
+import com.loskon.androidprojectcitizens.ui.recycler.MyRecyclerAdapter;
 
 import java.util.ArrayList;
 
-import static com.loskon.androidprojectcitizens.ui.fragment.CitizenFragment.ARG_ID;
+import static com.loskon.androidprojectcitizens.ui.fragment.CitizenFragment.ARG_CITIZEN;
+import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.KEY_EXTRA;
+import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.KEY_SERIALIZABLE;
+import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.REQUEST_SERVICE;
+import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.RESULT_SERVICE_OK;
 
 /**
  * Хост представления для фрагментов
@@ -28,15 +31,12 @@ import static com.loskon.androidprojectcitizens.ui.fragment.CitizenFragment.ARG_
 
 public class MainActivity extends AppCompatActivity implements MyRecyclerAdapter.CallbackSelected {
 
-    public static final String KEY_EXTRA = "key_put_extra";
-    public static final String KEY_SERIALIZABLE = "key_citizen_array_list";
-    public static final String KEY_PENDING_INTENT = "key_pending_intent";
-
-    public static final int REQUEST_SERVICE = 451;
-    public static final int RESULT_SERVICE_OK = 452;
-
     private WidgetsHelper widgetsHelper;
+    private ResourcesHelper resourcesHelper;
+    private ServiceHelper serviceHelper;
     private FragmentManager supportFragmentManager;
+
+    private ArrayList<Citizen> citizens;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,59 +45,51 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerAdapter
 
         initialiseSettings();
         openListFragment();
+        serviceHelper.startService();
     }
 
     private void initialiseSettings() {
         widgetsHelper = new WidgetsHelper(this);
+        resourcesHelper = new ResourcesHelper(this);
+        serviceHelper = new ServiceHelper(this);
+
         supportFragmentManager = getSupportFragmentManager();
         MyRecyclerAdapter.registerCallbackSelected(this);
     }
 
     private void openListFragment() {
-        Fragment listFragment = supportFragmentManager.findFragmentById(R.id.fragment_container);
-
-        if (listFragment == null) {
-            listFragment = new ListCitizensFragment();
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, listFragment)
-                    .commit();
-        }
+        supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, new ListCitizensFragment())
+                .commit();
     }
 
     @Override
-    public void onCallbackSelected(int id) {
+    public void onCallbackSelected(Citizen citizen) {
         CitizenFragment citizenFragment = new CitizenFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ARG_ID, id);
+        bundle.putSerializable(ARG_CITIZEN, citizen);
         citizenFragment.setArguments(bundle);
 
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, citizenFragment)
-                .addToBackStack(null)
-                .commit();
+        replaceFragment(citizenFragment);
     }
 
     public void openSettingsFragment() {
+        replaceFragment(new SettingsFragment());
+    }
+
+    private void replaceFragment(Fragment fragment) {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragment_container, new SettingsFragment())
+                .setCustomAnimations(
+                        R.anim.enter_fg_slide_from_bottom,  // Ввод в следующий
+                        R.anim.leave_fg_slide_from_top, // Выход из текущего фрагмента
+                        R.anim.enter_fg_slide_from_top, // Ввод в прошлый фрагмент
+                        R.anim.leave_fg_slide_from_bottom // Выход из открытого фрагмента
+                )
+                .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        startService();
-    }
-
-    private void startService() {
-        PendingIntent pendingResult = createPendingResult(REQUEST_SERVICE, new Intent(), 0);
-        Intent intent = new Intent(getApplicationContext(), LocalService.class);
-        intent.putExtra(KEY_PENDING_INTENT, pendingResult);
-        startService(intent);
     }
 
     @SuppressWarnings("unchecked")
@@ -106,21 +98,28 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerAdapter
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_SERVICE && resultCode == RESULT_SERVICE_OK) {
-
-            Bundle args = data.getBundleExtra(KEY_EXTRA);
-            ArrayList<Citizen> object = (ArrayList<Citizen>) args.getSerializable(KEY_SERIALIZABLE);
-
-            Toast.makeText(this, "" + object, Toast.LENGTH_LONG).show();
+            Bundle bundle = data.getBundleExtra(KEY_EXTRA);
+            if (bundle != null) {
+                citizens = (ArrayList<Citizen>) bundle.getSerializable(KEY_SERIALIZABLE);
+            }
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, LocalService.class));
+        serviceHelper.stopService();
     }
 
     public WidgetsHelper getWidgetsHelper() {
         return widgetsHelper;
+    }
+
+    public ResourcesHelper getResourcesHelper() {
+        return resourcesHelper;
+    }
+
+    public ArrayList<Citizen> getCitizens() {
+        return citizens;
     }
 }

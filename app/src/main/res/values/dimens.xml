@@ -9,4 +9,10 @@
 
     <!-- Slider margin -->
     <dimen name="slider_margin">4dp</dimen>
+
+    <!-- CardView -->
+    <dimen name="item_card_margin">2dp</dimen>
+    <dimen name="include_card_margin">6dp</dimen>
+    <dimen name="card_corner_radius">6dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
 </resources>
