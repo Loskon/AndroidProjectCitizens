@@ -1,6 +1,8 @@
 # IntelliJ
 *.iml
-/.idea
+.idea
+.idea/vcs.xml
+.idea/gradle.xml
 
 # OS generated files
 .DS_Store
