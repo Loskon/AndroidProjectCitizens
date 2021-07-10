@@ -6,10 +6,7 @@ package com.loskon.androidprojectcitizens.generator;
 
 public class SourceCitizenStore {
 
-    public SourceCitizenStore() {
-    }
-
-    // Фамилии
+    // Фамилии (несклоняемые)
     private final String[] lastNameGen = {
             "Задворных",
             "Бойко",

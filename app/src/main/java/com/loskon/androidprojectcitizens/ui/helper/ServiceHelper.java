@@ -3,7 +3,7 @@ package com.loskon.androidprojectcitizens.ui.helper;
 import android.app.PendingIntent;
 import android.content.Intent;
 
-import com.loskon.androidprojectcitizens.service.MyService;
+import com.loskon.androidprojectcitizens.service.AppService;
 import com.loskon.androidprojectcitizens.ui.activity.MainActivity;
 
 /**
@@ -12,10 +12,12 @@ import com.loskon.androidprojectcitizens.ui.activity.MainActivity;
 
 public class ServiceHelper {
 
+    // Keys
     public static final String KEY_EXTRA = "key_put_extra";
     public static final String KEY_SERIALIZABLE = "key_citizen_array_list";
     public static final String KEY_PENDING_INTENT = "key_pending_intent";
 
+    // Request code
     public static final int REQUEST_SERVICE = 451;
     public static final int RESULT_SERVICE_OK = 452;
 
@@ -27,12 +29,12 @@ public class ServiceHelper {
 
     public void startService() {
         PendingIntent pendingIntent = activity.createPendingResult(REQUEST_SERVICE, new Intent(), 0);
-        Intent intent = new Intent(activity, MyService.class);
+        Intent intent = new Intent(activity, AppService.class);
         intent.putExtra(KEY_PENDING_INTENT, pendingIntent);
         activity.startService(intent);
     }
 
     public void stopService() {
-        activity.stopService(new Intent(activity, MyService.class));
+        activity.stopService(new Intent(activity, AppService.class));
     }
 }

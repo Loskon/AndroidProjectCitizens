@@ -37,14 +37,17 @@ public class CitizenFragment extends Fragment {
     private ImageView imageViewPerson;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.fragment_citizen, container, false);
-        initialiseSettingsViews(view);
+        initialiseViews(view);
         return view;
     }
 
-    private void initialiseSettingsViews(View view) {
+    private void initialiseViews(View view) {
         imageViewPerson = view.findViewById(R.id.image_view_person);
         tvFullName = view.findViewById(R.id.tv_full_name);
         tvDistrict = view.findViewById(R.id.tv_district);
@@ -59,17 +62,17 @@ public class CitizenFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         activity = (MainActivity) requireActivity();
 
-        initialiseCitizenWidgets();
-        handlersCitizenWidgets();
+        initialiseWidgets();
+        installHandlers();
     }
 
-    private void initialiseCitizenWidgets() {
+    private void initialiseWidgets() {
         widgetsHelper = activity.getWidgetsHelper();
         resourcesHelper = activity.getResourcesHelper();
         bottomAppBar = widgetsHelper.getBottomAppBar();
     }
 
-    private void handlersCitizenWidgets() {
+    private void installHandlers() {
         bottomAppBar.setNavigationOnClickListener(v -> activity.onBackPressed());
     }
 
@@ -85,9 +88,9 @@ public class CitizenFragment extends Fragment {
             tvFullName.setText(citizen.getFullName());
             tvDistrict.setText(citizen.getDistrictName());
             tvAge.setText(String.valueOf(citizen.getAge()));
-            tvSex.setText(resourcesHelper.getResSex(isMale));
+            tvSex.setText(resourcesHelper.getSex(isMale));
             tvWork.setText(citizen.getWorkName());
-            tvCar.setText(resourcesHelper.getResThereCar(citizen.isThereCar()));
+            tvCar.setText(resourcesHelper.getThereCar(citizen.isThereCar()));
 
             // Для установки изображения
             int draw = resourcesHelper.getImageViewPerson(isMale);
@@ -98,6 +101,6 @@ public class CitizenFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        widgetsHelper.isMainActivityItemsVisible(false);
+        widgetsHelper.isItemsVisible(false);
     }
 }

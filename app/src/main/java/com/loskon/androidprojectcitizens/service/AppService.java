@@ -18,9 +18,9 @@ import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.KEY_PEND
  * Сервис
  */
 
-public class MyService extends Service implements SettingsFragment.CallbackSettings {
+public class AppService extends Service implements SettingsFragment.CallbackSettings {
 
-    private static final String TAG = MyService.class.getSimpleName();
+    private static final String TAG = "MyLogs_" + AppService.class.getSimpleName();
 
     private Context context;
     private GeneratorControl generatorControl;
@@ -33,13 +33,6 @@ public class MyService extends Service implements SettingsFragment.CallbackSetti
     }
 
     @Override
-    public void onCallbackSettings() {
-        // Перезапуск потока после изменения настроек
-        stopGenerator();
-        startGenerator();
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         starCommand(intent);
         return super.onStartCommand(intent, flags, startId);
@@ -49,27 +42,35 @@ public class MyService extends Service implements SettingsFragment.CallbackSetti
         PendingIntent pendingIntent = intent.getParcelableExtra(KEY_PENDING_INTENT);
         generatorControl = new GeneratorControl(context, pendingIntent);
         startGenerator();
-        Log.d(TAG, "Service onStartCommand()");
+        Log.d(TAG, "onStartCommand()");
     }
 
     private void startGenerator() {
-        generatorControl.startGen();
-    }
-
-    private void stopGenerator() {
-        generatorControl.stopGen();
+        generatorControl.start();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         stopGenerator();
-        Log.d(TAG, "Service onDestroy()");
+        Log.d(TAG, "onDestroy()");
+    }
+
+    private void stopGenerator() {
+        generatorControl.stop();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    // Callback
+    @Override
+    public void onCallbackSettings() {
+        // Перезапуск потока после изменения настроек
+        stopGenerator();
+        startGenerator();
     }
 }

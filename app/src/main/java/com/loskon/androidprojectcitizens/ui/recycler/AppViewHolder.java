@@ -12,13 +12,13 @@ import com.loskon.androidprojectcitizens.R;
  * Предоставление доступа View-компонентам
  */
 
-public class MyViewHolder extends RecyclerView.ViewHolder {
+public class AppViewHolder extends RecyclerView.ViewHolder {
 
     public TextView fullName;
     public TextView sex;
     public TextView age;
 
-    public MyViewHolder(@NonNull View itemView) {
+    public AppViewHolder(@NonNull View itemView) {
         super(itemView);
 
         fullName = itemView.findViewById(R.id.tv_card_full_name);

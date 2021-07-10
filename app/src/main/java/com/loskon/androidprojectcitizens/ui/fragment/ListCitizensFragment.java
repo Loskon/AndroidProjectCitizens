@@ -28,7 +28,8 @@ import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.model.Citizen;
 import com.loskon.androidprojectcitizens.ui.activity.MainActivity;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
-import com.loskon.androidprojectcitizens.ui.recycler.MyRecyclerAdapter;
+import com.loskon.androidprojectcitizens.ui.recycler.AppRecyclerAdapter;
+import com.loskon.androidprojectcitizens.utils.WidgetUtils;
 import com.loskon.androidprojectcitizens.viewmodel.CitizenViewModel;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 
 public class ListCitizensFragment extends Fragment {
 
-    private static final String TAG = ListCitizensFragment.class.getSimpleName();
+    private static final String TAG = "MyLogs_" + ListCitizensFragment.class.getSimpleName();
 
     private static final String SAVED_RECYCLER_STATE = "saved_recycler_state";
     private static final String SAVED_PROGRESS_VISIBLE = "saved_progress_visible";
@@ -49,7 +50,7 @@ public class ListCitizensFragment extends Fragment {
     private WidgetsHelper widgetsHelper;
     private CitizenViewModel viewModel;
     private RecyclerView.LayoutManager layoutManager;
-    private LayoutAnimationController controller;
+    private LayoutAnimationController animationController;
 
     private LinearProgressIndicator indicator;
     private TextView tvEmpty;
@@ -60,18 +61,20 @@ public class ListCitizensFragment extends Fragment {
     private ArrayList<Citizen> citizens = new ArrayList<>();
     private final Handler handler = new Handler();
 
-    private boolean isFirstClick = true;
+    private boolean hasFirstClick = false;
     private boolean isProgressVisible = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_citizens, container, false);
-        initialiseListViews(view);
+        initialiseViews(view);
         return view;
     }
 
-    private void initialiseListViews(View view) {
+    private void initialiseViews(View view) {
         indicator = view.findViewById(R.id.indicator);
         tvEmpty = view.findViewById(R.id.tv_empty_list);
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -82,19 +85,19 @@ public class ListCitizensFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         activity = (MainActivity) requireActivity();
 
-        initialiseListWidgets();
-        handlersListWidgets();
+        initialiseWidgets();
+        installHandlers();
         setupViewModel();
     }
 
-    private void initialiseListWidgets() {
+    private void initialiseWidgets() {
         widgetsHelper = activity.getWidgetsHelper();
         fab = widgetsHelper.getFab();
         bottomAppBar = widgetsHelper.getBottomAppBar();
-        controller = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_animation);
+        animationController = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_animation);
     }
 
-    private void handlersListWidgets() {
+    private void installHandlers() {
         fab.setOnClickListener(v -> onClickFab());
         bottomAppBar.setOnMenuItemClickListener(this::onClickItemMenu);
     }
@@ -103,26 +106,27 @@ public class ListCitizensFragment extends Fragment {
         citizens = activity.getCitizens();
 
         if (citizens.size() != 0) {
-            callAction();
+            startLoadingList();
         } else {
             callErrorMessage();
         }
+
+        widgetsHelper.startAnimateFab();
     }
 
-    private void callAction() {
+    private void startLoadingList() {
         isProgressVisible = true;
         isVisibleIndicator(true);
         startHandler();
-        widgetsHelper.startAnimateFab();
-        if (isFirstClick) firstClick(); // Смена иконки fab после первой загрузке списка
+        if (!hasFirstClick) firstClick(); // Смена иконки fab после первой загрузке списка
     }
 
     private void isVisibleIndicator(boolean isVisible) {
-        widgetsHelper.isVisibleIndicator(indicator, isVisible);
+        WidgetUtils.isVisible(indicator, isVisible);
     }
 
     private void startHandler() {
-        int seconds = (int) (Math.random() * 4 + 1); // Случайное время загрузки списка
+        int seconds = (int) (Math.random() * 4 + 1); // Время загрузки списка от 1 до 4 секунд
         Log.d(TAG, "seconds: " + seconds);
         handler.removeCallbacksAndMessages(null);
         handler.postDelayed(this::handlerMethod, seconds * 1000);
@@ -132,12 +136,12 @@ public class ListCitizensFragment extends Fragment {
         isProgressVisible = false;
         isVisibleIndicator(false);
         bundleState.clear(); // Сброс сохранения состояний при обновлении
-        recyclerView.setLayoutAnimation(controller); // Показ анимации только при обновлении
+        recyclerView.setLayoutAnimation(animationController); // Показ анимации только при обновлении
         viewModel.setCitizens(citizens);
     }
 
     private void firstClick() {
-        isFirstClick = false;
+        hasFirstClick = true;
         widgetsHelper.setIconFab();
     }
 
@@ -150,9 +154,9 @@ public class ListCitizensFragment extends Fragment {
         if (item.getItemId() == R.id.action_settings) {
             activity.openSettingsFragment();
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     private void setupViewModel() {
@@ -164,12 +168,12 @@ public class ListCitizensFragment extends Fragment {
 
     private void updateUI(ArrayList<Citizen> userArrayList) {
         if (userArrayList != null) {
-            MyRecyclerAdapter myRecyclerAdapter = new MyRecyclerAdapter(activity, userArrayList);
+            AppRecyclerAdapter appRecyclerAdapter = new AppRecyclerAdapter(activity, userArrayList);
             layoutManager = new LinearLayoutManager(activity);
             recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(myRecyclerAdapter);
+            recyclerView.setAdapter(appRecyclerAdapter);
             recyclerView.setHasFixedSize(true);
-            widgetsHelper.isVisibleTextEmpty(tvEmpty, userArrayList.isEmpty()); // Для скрытия текста о пустом списке
+            WidgetUtils.isVisibleGone(tvEmpty, userArrayList.isEmpty());
         }
     }
 
@@ -180,9 +184,9 @@ public class ListCitizensFragment extends Fragment {
     }
 
     private void onResumeAction() {
-        widgetsHelper.isMainActivityItemsVisible(true);
+        widgetsHelper.isItemsVisible(true);
         restoreViewsState();
-        isVisibleIndicator(isProgressVisible); // Для восстановления видимости при смене фрагментов
+        isVisibleIndicator(isProgressVisible);
     }
 
     private void restoreViewsState() {

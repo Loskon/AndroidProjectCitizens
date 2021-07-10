@@ -15,7 +15,7 @@ import com.loskon.androidprojectcitizens.ui.fragment.SettingsFragment;
 import com.loskon.androidprojectcitizens.ui.helper.ResourcesHelper;
 import com.loskon.androidprojectcitizens.ui.helper.ServiceHelper;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
-import com.loskon.androidprojectcitizens.ui.recycler.MyRecyclerAdapter;
+import com.loskon.androidprojectcitizens.ui.recycler.AppRecyclerAdapter;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.RESULT_S
  * Хост представления для фрагментов
  */
 
-public class MainActivity extends AppCompatActivity implements MyRecyclerAdapter.CallbackSelected {
+public class MainActivity extends AppCompatActivity implements AppRecyclerAdapter.CallbackSelected {
 
     private WidgetsHelper widgetsHelper;
     private ResourcesHelper resourcesHelper;
@@ -43,18 +43,22 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initialiseSettings();
+        initialiseObjects();
+        initialiseOther();
         openListFragment();
         serviceHelper.startService();
     }
 
-    private void initialiseSettings() {
+    private void initialiseObjects() {
         widgetsHelper = new WidgetsHelper(this);
         resourcesHelper = new ResourcesHelper(this);
         serviceHelper = new ServiceHelper(this);
 
+    }
+
+    private void initialiseOther() {
         supportFragmentManager = getSupportFragmentManager();
-        MyRecyclerAdapter.registerCallbackSelected(this);
+        AppRecyclerAdapter.registerCallbackSelected(this);
     }
 
     private void openListFragment() {

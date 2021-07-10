@@ -15,7 +15,7 @@ public class ResourcesHelper {
         this.activity = activity;
     }
 
-    public String getResSex(boolean isMale) {
+    public String getSex(boolean isMale) {
         String sex;
 
         if (isMale) {
@@ -27,7 +27,7 @@ public class ResourcesHelper {
         return sex;
     }
 
-    public String getResThereCar(boolean isThereCar) {
+    public String getThereCar(boolean isThereCar) {
         String car;
 
         if (isThereCar) {

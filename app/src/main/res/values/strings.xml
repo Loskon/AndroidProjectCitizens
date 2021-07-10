@@ -20,7 +20,7 @@
 
     <!-- fragment_list_citizens -->
     <string name="fg_list_empty">Список пуст</string>
-    <string name="fg_list_error">Ошибка! Ну удалось загрузить список</string>
+    <string name="fg_list_error">Ошибка! Не удалось загрузить список</string>
     <!-- recyclerview items -->
     <string name="item_sex_male">Пол: мужской</string>
     <string name="item_sex_female">Пол: женский</string>
@@ -30,4 +30,10 @@
     <!-- Menu -->
     <!-- menu_settings -->
     <string name="menu_settings_open">Настройки</string>
+
+
+    <!-- Sheets -->
+    <!-- sheet_dialog_settings -->
+    <string name="sh_settings_hint">Введите значение от %1$d до %2$d</string>
+    <string name="sh_settings_error">Ошибка! Введите корректное число!</string>
 </resources>

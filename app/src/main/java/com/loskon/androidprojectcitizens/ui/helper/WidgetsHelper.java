@@ -14,7 +14,7 @@ import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.ui.activity.MainActivity;
 
 /**
- * Помощник для управления элементами
+ * Помощник для управления элементами MainActivity
  */
 
 public class WidgetsHelper {
@@ -38,10 +38,10 @@ public class WidgetsHelper {
         appBarMenu = bottomAppBar.getMenu();
     }
 
-    public void isMainActivityItemsVisible(boolean isVisible) {
+    public void isItemsVisible(boolean isVisible) {
         // Скрытие/показ элементов при смене фрагментов
         isMenuItemVisible(isVisible);
-        isIconFabVisible(isVisible);
+        isFabVisible(isVisible);
         isNavigationIconVisible(!isVisible);
     }
 
@@ -49,7 +49,7 @@ public class WidgetsHelper {
         appBarMenu.findItem(R.id.action_settings).setVisible(isVisible);
     }
 
-    private void isIconFabVisible(boolean isVisible) {
+    private void isFabVisible(boolean isVisible) {
         if (isVisible) {
             fab.show();
         } else {
@@ -81,31 +81,5 @@ public class WidgetsHelper {
 
     public BottomAppBar getBottomAppBar() {
         return bottomAppBar;
-    }
-
-
-    //Fragments
-    public void isVisibleIndicator(LinearProgressIndicator indicator, boolean isVisible) {
-        int vis;
-
-        if (isVisible) {
-            vis = View.VISIBLE;
-        } else {
-            vis = View.INVISIBLE;
-        }
-
-        indicator.setVisibility(vis);
-    }
-
-    public void isVisibleTextEmpty(TextView tvEmpty, boolean isVisible) {
-        int vis;
-
-        if (isVisible) {
-            vis = View.VISIBLE;
-        } else {
-            vis = View.GONE;
-        }
-
-        tvEmpty.setVisibility(vis);
     }
 }

@@ -31,7 +31,8 @@
         android:text="10"
         app:layout_constraintBottom_toTopOf="@+id/slider_period"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_header_period" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_header_period"
+        tools:ignore="HardcodedText" />
 
     <com.google.android.material.slider.Slider
         android:id="@+id/slider_period"
@@ -86,7 +87,8 @@
             android:background="@drawable/bg_tv_rounded"
             android:gravity="center"
             android:padding="4dp"
-            android:text="19" />
+            android:text="19"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/tv_val_range_max"
@@ -98,7 +100,8 @@
             android:background="@drawable/bg_tv_rounded"
             android:gravity="center"
             android:padding="4dp"
-            android:text="60" />
+            android:text="60"
+            tools:ignore="HardcodedText" />
     </RelativeLayout>
 
     <com.google.android.material.slider.RangeSlider

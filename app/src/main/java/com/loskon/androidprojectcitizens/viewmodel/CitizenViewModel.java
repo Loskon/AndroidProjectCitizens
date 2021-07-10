@@ -8,22 +8,22 @@ import com.loskon.androidprojectcitizens.model.Citizen;
 import java.util.ArrayList;
 
 /**
- * Модель представления
+ * ViewModel
  */
 
 public class CitizenViewModel extends ViewModel {
 
-    private final MutableLiveData<ArrayList<Citizen>> citizenLiveData;
+    private final MutableLiveData<ArrayList<Citizen>> liveData;
 
     public CitizenViewModel() {
-        citizenLiveData = new MutableLiveData<>();
-    }
-
-    public MutableLiveData<ArrayList<Citizen>> getCitizens() {
-        return citizenLiveData;
+        liveData = new MutableLiveData<>();
     }
 
     public void setCitizens(ArrayList<Citizen> citizenArrayList) {
-        citizenLiveData.setValue(citizenArrayList);
+        liveData.setValue(citizenArrayList);
+    }
+
+    public MutableLiveData<ArrayList<Citizen>> getCitizens() {
+        return liveData;
     }
 }

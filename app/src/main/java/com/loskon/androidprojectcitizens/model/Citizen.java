@@ -3,7 +3,7 @@ package com.loskon.androidprojectcitizens.model;
 import java.io.Serializable;
 
 /**
- * Модель
+ * Model
  */
 
 public class Citizen implements Serializable {

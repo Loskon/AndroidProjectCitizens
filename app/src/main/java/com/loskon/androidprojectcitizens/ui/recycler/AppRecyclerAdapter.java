@@ -17,9 +17,9 @@ import java.util.List;
  * Адаптер для работы со списком граждан
  */
 
-public class MyRecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class AppRecyclerAdapter extends RecyclerView.Adapter<AppViewHolder> {
 
-    private static CallbackSelected callbackSelected;
+    private static CallbackSelected callback;
 
     private final Context context;
 
@@ -27,10 +27,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
     private String male, female;
 
     public static void registerCallbackSelected(CallbackSelected callbackSelected) {
-        MyRecyclerAdapter.callbackSelected = callbackSelected;
+        AppRecyclerAdapter.callback = callbackSelected;
     }
 
-    public MyRecyclerAdapter(Context context, List<Citizen> citizens) {
+    public AppRecyclerAdapter(Context context, List<Citizen> citizens) {
         this.context = context;
         this.citizens = citizens;
         initialiseVariables();
@@ -43,26 +43,25 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(context)
-                .inflate(R.layout.item_citizens, parent, false);
-        rootView.setOnClickListener(view -> handlerItemClick((RecyclerView) parent, view));
-        return new MyViewHolder(rootView);
+    public AppViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_citizens, parent, false);
+        view.setOnClickListener(v -> handlerItemClick((RecyclerView) parent, v));
+        return new AppViewHolder(view);
     }
 
     private void handlerItemClick(RecyclerView recyclerView, View itemView) {
         int position = recyclerView.getChildLayoutPosition(itemView);
         Citizen citizen = citizens.get(position);
-        if (callbackSelected != null) callbackSelected.onCallbackSelected(citizen);
+        if (callback != null) callback.onCallbackSelected(citizen);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AppViewHolder holder, int position) {
         Citizen citizen = citizens.get(position);
 
         holder.fullName.setText(citizen.getFullName());
         holder.sex.setText(getSexName(citizen.isMale()));
-        holder.age.setText(getAgeVal(citizen.getAge()));
+        holder.age.setText(getAge(citizen.getAge()));
     }
 
     private String getSexName(boolean isMale) {
@@ -77,7 +76,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return string;
     }
 
-    private String getAgeVal(int age) {
+    private String getAge(int age) {
         return context.getString(R.string.Item_age, age);
     }
 

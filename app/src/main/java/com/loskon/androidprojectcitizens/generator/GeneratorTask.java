@@ -20,9 +20,9 @@ import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.RESULT_S
  * Генератор граждан
  */
 
-public class CitizenGeneratorTask extends TimerTask {
+public class GeneratorTask extends TimerTask {
 
-    private static final String TAG = CitizenGeneratorTask.class.getSimpleName();
+    private static final String TAG = "MyLogs_" + GeneratorTask.class.getSimpleName();
 
     private final Context context;
     private final PendingIntent pendingIntent;
@@ -38,7 +38,7 @@ public class CitizenGeneratorTask extends TimerTask {
     private int workGenSize;
     private int districtNameGenSize;
 
-    public CitizenGeneratorTask(Context context, PendingIntent pendingIntent) {
+    public GeneratorTask(Context context, PendingIntent pendingIntent) {
         this.context = context;
         this.pendingIntent = pendingIntent;
 
@@ -48,11 +48,12 @@ public class CitizenGeneratorTask extends TimerTask {
     }
 
     private void initArrayVal() {
-        SourceCitizenStore citizensStore = new SourceCitizenStore();
-        lastNameGen = citizensStore.getLastNameGen();
-        firstNameGen = citizensStore.getFirstNameGen();
-        workGen = citizensStore.getWorkGen();
-        districtNameGen = citizensStore.getDistrictNameGen();
+        SourceCitizenStore store = new SourceCitizenStore();
+
+        lastNameGen = store.getLastNameGen();
+        firstNameGen = store.getFirstNameGen();
+        workGen = store.getWorkGen();
+        districtNameGen = store.getDistrictNameGen();
     }
 
     private void initArrayLength() {
@@ -87,7 +88,7 @@ public class CitizenGeneratorTask extends TimerTask {
 
         for (int i = 0; i < rangeGen; i++) {
             String lastRandomName = lastNameGen[getRandomInt(0, lastNameGenSize)]; // Фамилия
-            String firstRandomName = firstNameGen[getRandomInt(0, firstNameGenSize)]; // имя
+            String firstRandomName = firstNameGen[getRandomInt(0, firstNameGenSize)]; // Имя
             int ageRandom = getRandomInt(ageMinGen, ageMaxGen); // Возраст
             String workRandomName = workGen[getRandomInt(0, workGenSize)]; // Место работы
             boolean sexRandom = getRandomBoolean(); // Пол
@@ -113,7 +114,7 @@ public class CitizenGeneratorTask extends TimerTask {
             Log.d(TAG, "Generator is working, rangeGen: " + rangeGen);
         } catch (Exception exception) {
             exception.printStackTrace();
-            Log.d(TAG, "Generation error!", exception);
+            Log.d(TAG, "Generator is not working!", exception);
         }
     }
 

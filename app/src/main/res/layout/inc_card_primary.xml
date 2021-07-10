@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -34,7 +35,8 @@
                 android:layout_gravity="center"
                 android:layout_margin="16dp"
                 app:srcCompat="@drawable/female"
-                app:tint="@color/light_blue" />
+                app:tint="@color/light_blue"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tv_full_name"
@@ -47,7 +49,8 @@
                 android:text="Михал Михалыч"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/tv_district"
@@ -59,7 +62,8 @@
                 android:layout_marginBottom="16dp"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:text="Дзержинский" />
+                android:text="Дзержинский"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
 

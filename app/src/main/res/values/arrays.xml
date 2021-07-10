@@ -1,6 +1,6 @@
 <resources>
     <array name="range_slider_val">
-        <item>22.0</item>
-        <item>35.0</item>
+        <item>@integer/def_val_range_min</item>
+        <item>@integer/def_val_range_max</item>
     </array>
 </resources>

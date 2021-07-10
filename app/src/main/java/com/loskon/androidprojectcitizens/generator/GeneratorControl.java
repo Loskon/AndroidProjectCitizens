@@ -14,7 +14,7 @@ import java.util.Timer;
 
 public class GeneratorControl {
 
-    private static final String TAG = GeneratorControl.class.getSimpleName();
+    private static final String TAG = "MyLogs_" + GeneratorControl.class.getSimpleName();
 
     private final Context context;
 
@@ -26,14 +26,14 @@ public class GeneratorControl {
         this.pendingIntent = pendingIntent;
     }
 
-    public void startGen() {
-        int period = SharedHelper.getGenPeriod(context);
+    public void start() {
+        int period = SharedHelper.getGenerationPeriod(context);
         Log.d(TAG, "period: " + period);
         timer = new Timer();
-        timer.schedule(new CitizenGeneratorTask(context, pendingIntent), 0, period * 1000);
+        timer.schedule(new GeneratorTask(context, pendingIntent), 0, period * 1000);
     }
 
-    public void stopGen() {
+    public void stop() {
         timer.cancel();
         timer.purge();
     }
