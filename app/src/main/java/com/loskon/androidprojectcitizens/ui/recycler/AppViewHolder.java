@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.loskon.androidprojectcitizens.R;
+import com.loskon.androidprojectcitizens.databinding.ItemCitizensBinding;
+import com.loskon.androidprojectcitizens.model.Citizen;
 
 /**
  * Предоставление доступа View-компонентам
@@ -14,15 +16,16 @@ import com.loskon.androidprojectcitizens.R;
 
 public class AppViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView fullName;
-    public TextView sex;
-    public TextView age;
+    private final ItemCitizensBinding binding;
 
-    public AppViewHolder(@NonNull View itemView) {
-        super(itemView);
-
-        fullName = itemView.findViewById(R.id.tv_card_full_name);
-        sex = itemView.findViewById(R.id.tv_card_sex);
-        age = itemView.findViewById(R.id.tv_card_age);
+    public AppViewHolder(ItemCitizensBinding binding) {
+        super(binding.getRoot());
+        this.binding = binding;
     }
+
+    public void bind(Citizen citizen) {
+        binding.setCitizen(citizen);
+        binding.executePendingBindings();
+    }
+
 }

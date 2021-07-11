@@ -1,61 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/item_card_margin"
-    android:layout_marginEnd="@dimen/item_card_margin"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="@dimen/card_elevation"
-    app:cardUseCompatPadding="true"
-    app:rippleColor="@color/ripple_light_blue">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/linLytCard"
+    <data>
+
+        <import type="com.loskon.androidprojectcitizens.utils.ValuesUtils" />
+
+        <variable
+            name="citizen"
+            type="com.loskon.androidprojectcitizens.model.Citizen" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginStart="@dimen/item_card_margin"
+        android:layout_marginEnd="@dimen/item_card_margin"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation"
+        app:cardUseCompatPadding="true"
+        app:rippleColor="@color/ripple_light_blue">
 
-        <TextView
-            android:id="@+id/tv_card_full_name"
+        <LinearLayout
+            android:id="@+id/linLytCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="4dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Михал Михалыч"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            tools:ignore="HardcodedText" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_card_sex"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Мужской"
-            tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/tv_card_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{citizen.fullName}"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tv_card_age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="45"
-            tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/tv_card_sex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{ValuesUtils.getSexName(context, citizen.male)}" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_card_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{ValuesUtils.getAge(context, citizen.age)}" />
 
-</com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

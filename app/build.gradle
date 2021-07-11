@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -23,16 +24,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // Data binding support
+    buildFeatures {
+        dataBinding = true
     }
 }
 
 dependencies {
 
     // Lifecycle components
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
 
     // Kotlin components
     implementation 'androidx.core:core-ktx:1.6.0'
