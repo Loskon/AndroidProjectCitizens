@@ -9,7 +9,7 @@ Citizens - представляет собой простое приложени
     * [Задача](#subparagraph1-2)
     * [Требования](#subparagraph1-3)
     * [Полное описание](#subparagraph1-4)
-2. [О приложении](#paragraph2)
+2. [Описание приложения](#paragraph2)
     * [Скриншоты](#subparagraph2-1)
     * [Стэк](#subparagraph2-2)
     * [Ссылка на скачивание](#subparagraph2-3)
