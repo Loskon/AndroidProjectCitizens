@@ -11,9 +11,8 @@ Citizens - представляет собой простое приложени
     * [Полное описание](#subparagraph1-4)
 2. [Описание приложения](#paragraph2)
     * [Скриншоты](#subparagraph2-1)
-    * [Стэк](#subparagraph2-2)
-    * [Ссылка на скачивание](#subparagraph2-3)
-    
+3. [Контакты](#paragraph3)
+    * [Контакты](#subparagraph2-4)    
     
 ## Описание тестового задания <a name="paragraph1"></a>
 
@@ -81,25 +80,17 @@ Citizens - представляет собой простое приложени
 
 ## Описание приложения <a name="paragraph2"></a>
 
-<img src="screenshots/screen1.jpg" width="200">
+### Скриншоты <a name="subparagraph2-1"></a>
 
-<div class="foo">
-
-| Syntax      | Description | Test Text     |
-| :---        |    :----:   |          ---: |
-| Header      | Title       | Here's this   |
-| Paragraph   | Text        | And more      |
-
+<div align="center">
+   
+| <img src="screenshots/screen1.jpg" width="200"> | <img src="screenshots/screen2.jpg" width="200"> | <img src="screenshots/screen3.jpg" width="200"> |
+| :---------------------------------------------: | :---------------------------------------------: | :---------------------------------------------: |
+| Список граждан                                  | Данные гражданина                               | Настройки                                       |
+   
 </div>
 
-<style>
-.foo table {
-    width:100%;
-}
-</style>
+## Контакты <a name="paragraph3"></a>
 
-| Tables | Are | Cool |
-| ------------- |:-------------:| -----:|
-| col 3 is | right-aligned | $1600 |
-| col 2 is | centered | $12 |
-| zebra stripes | are neat | $1 |
+* [Telegram](https://t.me/loskon)
+* [Email](mailto:andreyrochev@yandex.ru)
