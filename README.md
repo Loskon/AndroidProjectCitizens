@@ -83,7 +83,7 @@ Citizens - представляет собой простое приложени
 
 <div align="center">
    
-| <img src="screenshots/screen1.jpg" width="200"> | <img src="screenshots/screen2.jpg" width="200"> | <img src="screenshots/screen3.jpg" width="200"> |
+| <img src="screenshots/screen1.jpg" width="250"> | <img src="screenshots/screen2.jpg" width="250"> | <img src="screenshots/screen3.jpg" width="250"> |
 | :---------------------------------------------: | :---------------------------------------------: | :---------------------------------------------: |
 | Список граждан                                  | Данные гражданина                               | Настройки                                       |
    
