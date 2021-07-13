@@ -80,3 +80,26 @@ Citizens - представляет собой простое приложени
 ***
 
 ## Описание приложения <a name="paragraph2"></a>
+
+<img src="screenshots/screen1.jpg" width="200">
+
+<div class="foo">
+
+| Syntax      | Description | Test Text     |
+| :---        |    :----:   |          ---: |
+| Header      | Title       | Here's this   |
+| Paragraph   | Text        | And more      |
+
+</div>
+
+<style>
+.foo table {
+    width:100%;
+}
+</style>
+
+| Tables | Are | Cool |
+| ------------- |:-------------:| -----:|
+| col 3 is | right-aligned | $1600 |
+| col 2 is | centered | $12 |
+| zebra stripes | are neat | $1 |
