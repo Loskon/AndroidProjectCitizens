@@ -95,4 +95,4 @@ Citizens - представляет собой простое приложени
 * [Email](mailto:andreyrochev@yandex.ru)
 
 
-[Вверх](#paragraph0)
+[Вернуться к описанию :arrow_up:](#paragraph0)
