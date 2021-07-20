@@ -12,7 +12,6 @@ import com.loskon.androidprojectcitizens.model.Citizen;
 import com.loskon.androidprojectcitizens.ui.fragment.CitizenFragment;
 import com.loskon.androidprojectcitizens.ui.fragment.ListCitizensFragment;
 import com.loskon.androidprojectcitizens.ui.fragment.SettingsFragment;
-import com.loskon.androidprojectcitizens.ui.helper.ResourcesHelper;
 import com.loskon.androidprojectcitizens.ui.helper.ServiceHelper;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
 import com.loskon.androidprojectcitizens.ui.recycler.AppRecyclerAdapter;
@@ -32,7 +31,6 @@ import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.RESULT_S
 public class MainActivity extends AppCompatActivity implements AppRecyclerAdapter.CallbackSelected {
 
     private WidgetsHelper widgetsHelper;
-    private ResourcesHelper resourcesHelper;
     private ServiceHelper serviceHelper;
     private FragmentManager supportFragmentManager;
 
@@ -51,9 +49,7 @@ public class MainActivity extends AppCompatActivity implements AppRecyclerAdapte
 
     private void initialiseObjects() {
         widgetsHelper = new WidgetsHelper(this);
-        resourcesHelper = new ResourcesHelper(this);
         serviceHelper = new ServiceHelper(this);
-
     }
 
     private void initialiseOther() {
@@ -117,10 +113,6 @@ public class MainActivity extends AppCompatActivity implements AppRecyclerAdapte
 
     public WidgetsHelper getWidgetsHelper() {
         return widgetsHelper;
-    }
-
-    public ResourcesHelper getResourcesHelper() {
-        return resourcesHelper;
     }
 
     public ArrayList<Citizen> getCitizens() {

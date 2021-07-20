@@ -23,16 +23,13 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter<AppViewHolder> {
 
     private static CallbackSelected callback;
 
-    private final Context context;
-
     private final List<Citizen> citizens;
 
     public static void registerCallbackSelected(CallbackSelected callbackSelected) {
         AppRecyclerAdapter.callback = callbackSelected;
     }
 
-    public AppRecyclerAdapter(Context context, List<Citizen> citizens) {
-        this.context = context;
+    public AppRecyclerAdapter(List<Citizen> citizens) {
         this.citizens = citizens;
     }
 

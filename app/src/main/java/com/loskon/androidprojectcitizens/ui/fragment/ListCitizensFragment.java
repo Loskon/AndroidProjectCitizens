@@ -168,7 +168,7 @@ public class ListCitizensFragment extends Fragment {
 
     private void updateUI(ArrayList<Citizen> userArrayList) {
         if (userArrayList != null) {
-            AppRecyclerAdapter appRecyclerAdapter = new AppRecyclerAdapter(activity, userArrayList);
+            AppRecyclerAdapter appRecyclerAdapter = new AppRecyclerAdapter(userArrayList);
             layoutManager = new LinearLayoutManager(activity);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(appRecyclerAdapter);
