@@ -1,8 +1,9 @@
-package com.loskon.androidprojectcitizens.ui.recycler;
+package com.loskon.androidprojectcitizens.ui.recyclerview;
 
-import android.content.Context;
+import static java.util.Collections.emptyList;
+
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -21,17 +22,7 @@ import java.util.List;
 
 public class AppRecyclerAdapter extends RecyclerView.Adapter<AppViewHolder> {
 
-    private static CallbackSelected callback;
-
-    private final List<Citizen> citizens;
-
-    public static void registerCallbackSelected(CallbackSelected callbackSelected) {
-        AppRecyclerAdapter.callback = callbackSelected;
-    }
-
-    public AppRecyclerAdapter(List<Citizen> citizens) {
-        this.citizens = citizens;
-    }
+    private List<Citizen> citizens = emptyList();
 
     @NonNull
     @Override
@@ -47,9 +38,20 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter<AppViewHolder> {
         Citizen citizen = citizens.get(position);
 
         holder.bind(citizen);
+
         holder.itemView.setOnClickListener(v -> {
-            if (callback != null) callback.onCallbackSelected(citizen);
+            if (callback != null) callback.onClickingItem(citizen);
         });
+    }
+
+    public void setCitizensList(List<Citizen> citizens) {
+        this.citizens = citizens;
+        updateChangedList();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void updateChangedList() {
+        notifyDataSetChanged();
     }
 
     @Override
@@ -57,7 +59,13 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter<AppViewHolder> {
         return citizens.size();
     }
 
-    public interface CallbackSelected {
-        void onCallbackSelected(Citizen citizen);
+    private static CallbackAdapter callback;
+
+    public static void listenerCallback(CallbackAdapter callbackAdapter) {
+        AppRecyclerAdapter.callback = callbackAdapter;
+    }
+
+    public interface CallbackAdapter {
+        void onClickingItem(Citizen citizen);
     }
 }

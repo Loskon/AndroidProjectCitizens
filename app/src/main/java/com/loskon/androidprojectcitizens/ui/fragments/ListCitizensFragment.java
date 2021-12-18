@@ -1,8 +1,8 @@
-package com.loskon.androidprojectcitizens.ui.fragment;
+package com.loskon.androidprojectcitizens.ui.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -28,7 +28,7 @@ import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.model.Citizen;
 import com.loskon.androidprojectcitizens.ui.activity.MainActivity;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
-import com.loskon.androidprojectcitizens.ui.recycler.AppRecyclerAdapter;
+import com.loskon.androidprojectcitizens.ui.recyclerview.AppRecyclerAdapter;
 import com.loskon.androidprojectcitizens.utils.WidgetUtils;
 import com.loskon.androidprojectcitizens.viewmodel.CitizenViewModel;
 
@@ -42,15 +42,14 @@ public class ListCitizensFragment extends Fragment {
 
     private static final String TAG = "MyLogs_" + ListCitizensFragment.class.getSimpleName();
 
-    private static final String SAVED_RECYCLER_STATE = "saved_recycler_state";
     private static final String SAVED_PROGRESS_VISIBLE = "saved_progress_visible";
-    private Bundle bundleState;
+    private final Bundle bundleState = new Bundle();
 
     private MainActivity activity;
     private WidgetsHelper widgetsHelper;
     private CitizenViewModel viewModel;
     private RecyclerView.LayoutManager layoutManager;
-    private LayoutAnimationController animationController;
+    private LayoutAnimationController animController;
 
     private LinearProgressIndicator indicator;
     private TextView tvEmpty;
@@ -58,11 +57,18 @@ public class ListCitizensFragment extends Fragment {
     private FloatingActionButton fab;
     private BottomAppBar bottomAppBar;
 
-    private ArrayList<Citizen> citizens = new ArrayList<>();
+    private final AppRecyclerAdapter adapter = new AppRecyclerAdapter();
     private final Handler handler = new Handler();
+    private ArrayList<Citizen> citizens = new ArrayList<>();
 
     private boolean hasFirstClick = false;
     private boolean isProgressVisible = false;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity = (MainActivity) context;
+    }
 
     @Override
     public View onCreateView(
@@ -83,30 +89,40 @@ public class ListCitizensFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        activity = (MainActivity) requireActivity();
-
+        configureRecyclerView();
         initialiseWidgets();
+        configureAnimController();
         installHandlers();
         setupViewModel();
+    }
+
+    private void configureRecyclerView() {
+        layoutManager = new LinearLayoutManager(activity);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
     }
 
     private void initialiseWidgets() {
         widgetsHelper = activity.getWidgetsHelper();
         fab = widgetsHelper.getFab();
         bottomAppBar = widgetsHelper.getBottomAppBar();
-        animationController = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_animation);
+    }
+
+    private void configureAnimController() {
+        animController = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_animation);
     }
 
     private void installHandlers() {
-        fab.setOnClickListener(v -> onClickFab());
-        bottomAppBar.setOnMenuItemClickListener(this::onClickItemMenu);
+        fab.setOnClickListener(v -> clickingFab());
+        bottomAppBar.setOnMenuItemClickListener(this::clickingItemMenu);
     }
 
-    private void onClickFab() {
+    private void clickingFab() {
         citizens = activity.getCitizens();
 
         if (citizens.size() != 0) {
-            startLoadingList();
+            performLoadingList();
         } else {
             callErrorMessage();
         }
@@ -114,29 +130,29 @@ public class ListCitizensFragment extends Fragment {
         widgetsHelper.startAnimateFab();
     }
 
-    private void startLoadingList() {
+    private void performLoadingList() {
         isProgressVisible = true;
-        isVisibleIndicator(true);
+        changeVisibleIndicator(true);
         startHandler();
         if (!hasFirstClick) firstClick(); // Смена иконки fab после первой загрузке списка
     }
 
-    private void isVisibleIndicator(boolean isVisible) {
-        WidgetUtils.isVisible(indicator, isVisible);
+    private void changeVisibleIndicator(boolean isVisible) {
+        WidgetUtils.setVisibleView(indicator, isVisible);
     }
 
     private void startHandler() {
         int seconds = (int) (Math.random() * 4 + 1); // Время загрузки списка от 1 до 4 секунд
         Log.d(TAG, "seconds: " + seconds);
         handler.removeCallbacksAndMessages(null);
-        handler.postDelayed(this::handlerMethod, seconds * 1000);
+        handler.postDelayed(this::performHandlerMethod, seconds * 1000L);
     }
 
-    private void handlerMethod() {
+    private void performHandlerMethod() {
         isProgressVisible = false;
-        isVisibleIndicator(false);
+        changeVisibleIndicator(false);
         bundleState.clear(); // Сброс сохранения состояний при обновлении
-        recyclerView.setLayoutAnimation(animationController); // Показ анимации только при обновлении
+        recyclerView.setLayoutAnimation(animController); // Показ анимации только при обновлении
         viewModel.setCitizens(citizens);
     }
 
@@ -150,7 +166,7 @@ public class ListCitizensFragment extends Fragment {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
 
-    private boolean onClickItemMenu(MenuItem item) {
+    private boolean clickingItemMenu(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             activity.openSettingsFragment();
             return true;
@@ -166,14 +182,10 @@ public class ListCitizensFragment extends Fragment {
 
     private final Observer<ArrayList<Citizen>> citizenListObserver = this::updateUI;
 
-    private void updateUI(ArrayList<Citizen> userArrayList) {
-        if (userArrayList != null) {
-            AppRecyclerAdapter appRecyclerAdapter = new AppRecyclerAdapter(userArrayList);
-            layoutManager = new LinearLayoutManager(activity);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(appRecyclerAdapter);
-            recyclerView.setHasFixedSize(true);
-            WidgetUtils.isVisibleGone(tvEmpty, userArrayList.isEmpty());
+    private void updateUI(ArrayList<Citizen> citizens) {
+        if (citizens != null) {
+            adapter.setCitizensList(citizens);
+            WidgetUtils.setVisibleViewGone(tvEmpty, citizens.isEmpty());
         }
     }
 
@@ -184,30 +196,23 @@ public class ListCitizensFragment extends Fragment {
     }
 
     private void onResumeAction() {
-        widgetsHelper.isItemsVisible(true);
-        restoreViewsState();
-        isVisibleIndicator(isProgressVisible);
+        widgetsHelper.isWidgetsVisible(true);
+        restoreIndicatorState();
     }
 
-    private void restoreViewsState() {
-        if (bundleState != null) {
-            Parcelable listState = bundleState.getParcelable(SAVED_RECYCLER_STATE);
-            if (layoutManager != null) layoutManager.onRestoreInstanceState(listState);
-            isProgressVisible = bundleState.getBoolean(SAVED_PROGRESS_VISIBLE);
-        }
+    private void restoreIndicatorState() {
+        isProgressVisible = bundleState.getBoolean(SAVED_PROGRESS_VISIBLE);
+        changeVisibleIndicator(isProgressVisible);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        saveViewsState();
+        saveIndicatorState();
     }
 
-    private void saveViewsState() {
-        bundleState = new Bundle();
+    private void saveIndicatorState() {
         if (layoutManager != null) {
-            Parcelable listState = layoutManager.onSaveInstanceState();
-            bundleState.putParcelable(SAVED_RECYCLER_STATE, listState);
             bundleState.putBoolean(SAVED_PROGRESS_VISIBLE, isProgressVisible);
         }
     }
