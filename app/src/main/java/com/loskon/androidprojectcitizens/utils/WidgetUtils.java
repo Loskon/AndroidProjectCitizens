@@ -8,28 +8,27 @@ import android.view.View;
 
 public class WidgetUtils {
 
-    //Fragments
-    public static void isVisible(View view, boolean isVisible) {
-        int visibleValue;
+    public static void setVisibleView(View view, boolean isVisible) {
+        int visible;
 
         if (isVisible) {
-            visibleValue = View.VISIBLE;
+            visible = View.VISIBLE;
         } else {
-            visibleValue = View.INVISIBLE;
+            visible = View.INVISIBLE;
         }
 
-        view.setVisibility(visibleValue);
+        view.setVisibility(visible);
     }
 
-    public static void isVisibleGone(View view, boolean isVisible) {
-        int vis;
+    public static void setVisibleViewGone(View view, boolean isVisible) {
+        int visible;
 
         if (isVisible) {
-            vis = View.VISIBLE;
+            visible = View.VISIBLE;
         } else {
-            vis = View.GONE;
+            visible = View.GONE;
         }
 
-        view.setVisibility(vis);
+        view.setVisibility(visible);
     }
 }
