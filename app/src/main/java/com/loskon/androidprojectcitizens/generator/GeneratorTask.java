@@ -27,6 +27,8 @@ public class GeneratorTask extends TimerTask {
     private final Context context;
     private final PendingIntent pendingIntent;
 
+    private final SourceCitizenStore store = new SourceCitizenStore();
+
     private String[] lastNameGen;
     private String[] firstNameGen;
     private String[] workGen;
@@ -42,14 +44,12 @@ public class GeneratorTask extends TimerTask {
         this.context = context;
         this.pendingIntent = pendingIntent;
 
-        initArrayVal();
+        initArrayValues();
         initArrayLength();
         initGenSettings();
     }
 
-    private void initArrayVal() {
-        SourceCitizenStore store = new SourceCitizenStore();
-
+    private void initArrayValues() {
         lastNameGen = store.getLastNameGen();
         firstNameGen = store.getFirstNameGen();
         workGen = store.getWorkGen();
@@ -76,15 +76,28 @@ public class GeneratorTask extends TimerTask {
 
     @Override
     public void run() {
-        TimerMethod();
+        performRunTimer();
     }
 
-    private void TimerMethod() {
-        int rangeGen = getRandomInt(10, 100);
-
-        ArrayList<Citizen> citizens = new ArrayList<>(rangeGen);
+    private void performRunTimer() {
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
+        int rangeGen = getRandomInt(10, 100);
+
+        bundle.putSerializable(KEY_SERIALIZABLE, getGeneratedList(rangeGen));
+        intent.putExtra(KEY_EXTRA, bundle);
+
+        try {
+            pendingIntent.send(context, RESULT_SERVICE_OK, intent);
+            Log.d(TAG, "Generator is working, rangeGen: " + rangeGen);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            Log.d(TAG, "Generator is not working!", exception);
+        }
+    }
+
+    private ArrayList<Citizen> getGeneratedList(int rangeGen) {
+        ArrayList<Citizen> citizens = new ArrayList<>(rangeGen);
 
         for (int i = 0; i < rangeGen; i++) {
             String lastRandomName = lastNameGen[getRandomInt(0, lastNameGenSize)]; // Фамилия
@@ -106,16 +119,7 @@ public class GeneratorTask extends TimerTask {
             citizens.add(citizen);
         }
 
-        bundle.putSerializable(KEY_SERIALIZABLE, citizens);
-        intent.putExtra(KEY_EXTRA, bundle);
-
-        try {
-            pendingIntent.send(context, RESULT_SERVICE_OK, intent);
-            Log.d(TAG, "Generator is working, rangeGen: " + rangeGen);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            Log.d(TAG, "Generator is not working!", exception);
-        }
+        return citizens;
     }
 
     public int getRandomInt(int min, int max) {
