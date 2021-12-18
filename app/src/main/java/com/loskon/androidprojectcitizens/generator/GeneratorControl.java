@@ -30,12 +30,17 @@ public class GeneratorControl {
         int period = SharedHelper.getGenerationPeriod(context);
         Log.d(TAG, "period: " + period);
         timer = new Timer();
-        timer.schedule(new GeneratorTask(context, pendingIntent), 0, period * 1000);
+        timer.schedule(new GeneratorTask(context, pendingIntent), 0, period * 1000L);
     }
 
     public void stop() {
         timer.cancel();
         timer.purge();
+    }
+
+    public void restart() {
+        stop();
+        start();
     }
 }
 

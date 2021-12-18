@@ -10,7 +10,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.loskon.androidprojectcitizens.generator.GeneratorControl;
-import com.loskon.androidprojectcitizens.ui.fragment.SettingsFragment;
+import com.loskon.androidprojectcitizens.ui.fragments.SettingsFragment;
 
 import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.KEY_PENDING_INTENT;
 
@@ -29,7 +29,7 @@ public class AppService extends Service implements SettingsFragment.CallbackSett
     public void onCreate() {
         super.onCreate();
         context = this;
-        SettingsFragment.registerCallbackSettings(this);
+        SettingsFragment.listenerCallback(this);
     }
 
     @Override
@@ -41,23 +41,16 @@ public class AppService extends Service implements SettingsFragment.CallbackSett
     private void starCommand(Intent intent) {
         PendingIntent pendingIntent = intent.getParcelableExtra(KEY_PENDING_INTENT);
         generatorControl = new GeneratorControl(context, pendingIntent);
-        startGenerator();
+        generatorControl.start();
         Log.d(TAG, "onStartCommand()");
     }
 
-    private void startGenerator() {
-        generatorControl.start();
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopGenerator();
-        Log.d(TAG, "onDestroy()");
-    }
-
-    private void stopGenerator() {
         generatorControl.stop();
+        Log.d(TAG, "onDestroy()");
     }
 
     @Nullable
@@ -68,9 +61,8 @@ public class AppService extends Service implements SettingsFragment.CallbackSett
 
     // Callback
     @Override
-    public void onCallbackSettings() {
+    public void onRestartGenerator() {
         // Перезапуск потока после изменения настроек
-        stopGenerator();
-        startGenerator();
+        generatorControl.restart();
     }
 }
