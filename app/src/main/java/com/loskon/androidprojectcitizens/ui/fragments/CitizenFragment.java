@@ -1,12 +1,10 @@
-package com.loskon.androidprojectcitizens.ui.fragment;
+package com.loskon.androidprojectcitizens.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +38,11 @@ public class CitizenFragment extends Fragment {
     @Override
     public void onAttach(@NonNull @NotNull Context context) {
         super.onAttach(context);
+        activity = (MainActivity) context;
+        getCitizen();
+    }
+
+    private void getCitizen() {
         Bundle bundle = getArguments();
 
         if (bundle != null) {
@@ -59,8 +62,6 @@ public class CitizenFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        activity = (MainActivity) requireActivity();
-
         initialiseWidgets();
         setupWidgets();
         installHandlers();
@@ -72,7 +73,7 @@ public class CitizenFragment extends Fragment {
     }
 
     private void setupWidgets() {
-        widgetsHelper.isItemsVisible(false);
+        widgetsHelper.isWidgetsVisible(false);
     }
 
     private void installHandlers() {

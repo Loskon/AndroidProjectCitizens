@@ -1,12 +1,7 @@
-package com.loskon.androidprojectcitizens.ui.recycler;
+package com.loskon.androidprojectcitizens.ui.recyclerview;
 
-import android.view.View;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.databinding.ItemCitizensBinding;
 import com.loskon.androidprojectcitizens.model.Citizen;
 

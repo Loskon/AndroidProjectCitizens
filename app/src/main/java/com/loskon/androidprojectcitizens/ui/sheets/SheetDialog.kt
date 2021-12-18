@@ -11,23 +11,21 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.loskon.androidprojectcitizens.R
 import com.loskon.androidprojectcitizens.R.style.BaseBottomSheetDialog
-import com.loskon.androidprojectcitizens.ui.fragment.SettingsFragment
+import com.loskon.androidprojectcitizens.ui.fragments.SettingsFragment
 import com.loskon.androidprojectcitizens.utils.showKeyboard
 
 /**
  * Нижнее диалоговое окно для ввода значений
  */
 
+const val TYPE_PERIOD = "type_period"
+const val TYPE_RANGE_MIN = "type_range_min"
+const val TYPE_RANGE_MAX = "type_range_max"
+
 class SheetDialog(
     private val context: Context,
-    private val settingsFragment: SettingsFragment
+    private val fragment: SettingsFragment
 ) {
-
-    companion object {
-        const val TYPE_PERIOD = "type_period"
-        const val TYPE_RANGE_MIN = "type_range_min"
-        const val TYPE_RANGE_MAX = "type_range_max"
-    }
 
     private val dialog: BottomSheetDialog = BottomSheetDialog(context, BaseBottomSheetDialog)
     private val behavior: BottomSheetBehavior<FrameLayout> = dialog.behavior
@@ -44,11 +42,9 @@ class SheetDialog(
     private var typeSlider: String = ""
 
     init {
-        behavior.apply {
-            state = BottomSheetBehavior.STATE_EXPANDED
-            isDraggable = false
-            isHideable = false
-        }
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        behavior.isDraggable = false
+        behavior.isHideable = false
         editText.showKeyboard(context)
     }
 
@@ -138,7 +134,7 @@ class SheetDialog(
             }
         }
 
-        settingsFragment.setSlidersValues(typeSlider, enteredValue, newNeighboringValue)
+        fragment.setSlidersValues(typeSlider, enteredValue, newNeighboringValue)
 
         dialog.dismiss()
     }

@@ -9,16 +9,16 @@ import androidx.fragment.app.FragmentManager;
 
 import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.model.Citizen;
-import com.loskon.androidprojectcitizens.ui.fragment.CitizenFragment;
-import com.loskon.androidprojectcitizens.ui.fragment.ListCitizensFragment;
-import com.loskon.androidprojectcitizens.ui.fragment.SettingsFragment;
+import com.loskon.androidprojectcitizens.ui.fragments.CitizenFragment;
+import com.loskon.androidprojectcitizens.ui.fragments.ListCitizensFragment;
+import com.loskon.androidprojectcitizens.ui.fragments.SettingsFragment;
 import com.loskon.androidprojectcitizens.ui.helper.ServiceHelper;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
-import com.loskon.androidprojectcitizens.ui.recycler.AppRecyclerAdapter;
+import com.loskon.androidprojectcitizens.ui.recyclerview.AppRecyclerAdapter;
 
 import java.util.ArrayList;
 
-import static com.loskon.androidprojectcitizens.ui.fragment.CitizenFragment.ARG_CITIZEN;
+import static com.loskon.androidprojectcitizens.ui.fragments.CitizenFragment.ARG_CITIZEN;
 import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.KEY_EXTRA;
 import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.KEY_SERIALIZABLE;
 import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.REQUEST_SERVICE;
@@ -28,7 +28,7 @@ import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.RESULT_S
  * Хост представления для фрагментов
  */
 
-public class MainActivity extends AppCompatActivity implements AppRecyclerAdapter.CallbackSelected {
+public class MainActivity extends AppCompatActivity implements AppRecyclerAdapter.CallbackAdapter {
 
     private WidgetsHelper widgetsHelper;
     private ServiceHelper serviceHelper;
@@ -42,29 +42,29 @@ public class MainActivity extends AppCompatActivity implements AppRecyclerAdapte
         setContentView(R.layout.activity_main);
 
         initialiseObjects();
-        initialiseOther();
-        openListFragment();
+        installCallbacks();
+        openCitizensListFragment();
         serviceHelper.startService();
     }
 
     private void initialiseObjects() {
         widgetsHelper = new WidgetsHelper(this);
         serviceHelper = new ServiceHelper(this);
-    }
-
-    private void initialiseOther() {
         supportFragmentManager = getSupportFragmentManager();
-        AppRecyclerAdapter.registerCallbackSelected(this);
     }
 
-    private void openListFragment() {
+    private void installCallbacks() {
+        AppRecyclerAdapter.listenerCallback(this);
+    }
+
+    private void openCitizensListFragment() {
         supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, new ListCitizensFragment())
                 .commit();
     }
 
     @Override
-    public void onCallbackSelected(Citizen citizen) {
+    public void onClickingItem(Citizen citizen) {
         CitizenFragment citizenFragment = new CitizenFragment();
 
         Bundle bundle = new Bundle();
@@ -82,10 +82,10 @@ public class MainActivity extends AppCompatActivity implements AppRecyclerAdapte
         supportFragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
-                        R.anim.enter_fg_slide_from_bottom,  // Ввод в следующий
-                        R.anim.leave_fg_slide_from_top, // Выход из текущего фрагмента
-                        R.anim.enter_fg_slide_from_top, // Ввод в прошлый фрагмент
-                        R.anim.leave_fg_slide_from_bottom // Выход из открытого фрагмента
+                        R.anim.enter_fg_slide_from_bottom,
+                        R.anim.leave_fg_slide_from_top,
+                        R.anim.enter_fg_slide_from_top,
+                        R.anim.leave_fg_slide_from_bottom
                 )
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)

@@ -1,5 +1,10 @@
-package com.loskon.androidprojectcitizens.ui.fragment;
+package com.loskon.androidprojectcitizens.ui.fragments;
 
+import static com.loskon.androidprojectcitizens.ui.sheets.SheetDialogKt.TYPE_PERIOD;
+import static com.loskon.androidprojectcitizens.ui.sheets.SheetDialogKt.TYPE_RANGE_MAX;
+import static com.loskon.androidprojectcitizens.ui.sheets.SheetDialogKt.TYPE_RANGE_MIN;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,10 +25,6 @@ import com.loskon.androidprojectcitizens.ui.helper.SharedHelper;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
 import com.loskon.androidprojectcitizens.ui.sheets.SheetDialog;
 
-import static com.loskon.androidprojectcitizens.ui.sheets.SheetDialog.TYPE_PERIOD;
-import static com.loskon.androidprojectcitizens.ui.sheets.SheetDialog.TYPE_RANGE_MAX;
-import static com.loskon.androidprojectcitizens.ui.sheets.SheetDialog.TYPE_RANGE_MIN;
-
 /**
  * Форма настроек генератора
  */
@@ -31,7 +32,6 @@ import static com.loskon.androidprojectcitizens.ui.sheets.SheetDialog.TYPE_RANGE
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "MyLogs_" + SettingsFragment.class.getSimpleName();
-    private static CallbackSettings callback;
 
     private MainActivity activity;
     private WidgetsHelper widgetsHelper;
@@ -49,8 +49,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private int preMaxOld;
     private int prePeriodOld;
 
-    public static void registerCallbackSettings(CallbackSettings callbackSettings) {
-        SettingsFragment.callback = callbackSettings;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity = (MainActivity) context;
     }
 
     @Override
@@ -74,8 +76,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        activity = (MainActivity) requireActivity();
-
         initialiseWidgets();
         installHandlers();
         loadSharedPref();
@@ -85,7 +85,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        widgetsHelper.isItemsVisible(false);
+        widgetsHelper.isWidgetsVisible(false);
     }
 
     private void initialiseWidgets() {
@@ -186,7 +186,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 (preMin != preMinOld) | (prePeriod != prePeriodOld);
 
         if (hasCallback) {
-            if (callback != null) callback.onCallbackSettings();
+            if (callback != null) callback.onRestartGenerator();
         }
     }
 
@@ -209,7 +209,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         installValuesInWidgets();
     }
 
+    private static CallbackSettings callback;
+
+    public static void listenerCallback(CallbackSettings callbackSettings) {
+        SettingsFragment.callback = callbackSettings;
+    }
+
     public interface CallbackSettings {
-        void onCallbackSettings();
+        void onRestartGenerator();
     }
 }

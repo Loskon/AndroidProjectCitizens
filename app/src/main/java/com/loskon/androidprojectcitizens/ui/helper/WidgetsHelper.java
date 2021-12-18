@@ -2,14 +2,11 @@ package com.loskon.androidprojectcitizens.ui.helper;
 
 import android.animation.ObjectAnimator;
 import android.view.Menu;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.ui.activity.MainActivity;
 
@@ -38,7 +35,7 @@ public class WidgetsHelper {
         appBarMenu = bottomAppBar.getMenu();
     }
 
-    public void isItemsVisible(boolean isVisible) {
+    public void isWidgetsVisible(boolean isVisible) {
         // Скрытие/показ элементов при смене фрагментов
         isMenuItemVisible(isVisible);
         isFabVisible(isVisible);
