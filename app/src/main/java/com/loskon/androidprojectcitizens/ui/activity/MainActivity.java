@@ -1,7 +1,11 @@
 package com.loskon.androidprojectcitizens.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -9,30 +13,28 @@ import androidx.fragment.app.FragmentManager;
 
 import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.model.Citizen;
+import com.loskon.androidprojectcitizens.service.AppService;
 import com.loskon.androidprojectcitizens.ui.fragments.CitizenFragment;
 import com.loskon.androidprojectcitizens.ui.fragments.ListCitizensFragment;
 import com.loskon.androidprojectcitizens.ui.fragments.SettingsFragment;
-import com.loskon.androidprojectcitizens.ui.helper.ServiceHelper;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
 import com.loskon.androidprojectcitizens.ui.recyclerview.AppRecyclerAdapter;
+import com.loskon.androidprojectcitizens.ui.recyclerview.RecyclerAdapterCallback;
 
 import java.util.ArrayList;
-
-import static com.loskon.androidprojectcitizens.ui.fragments.CitizenFragment.ARG_CITIZEN;
-import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.KEY_EXTRA;
-import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.KEY_SERIALIZABLE;
-import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.REQUEST_SERVICE;
-import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.RESULT_SERVICE_OK;
 
 /**
  * Хост представления для фрагментов
  */
 
-public class MainActivity extends AppCompatActivity implements AppRecyclerAdapter.CallbackAdapter {
+public class MainActivity extends AppCompatActivity implements RecyclerAdapterCallback {
+
+    public final static String BROADCAST_ACTION = "broadcast_action";
+    public static final String ARG_EXTRA_CITIZENS = "arg_extra_citizens";
+    public static final String ARG_EXTRA_SERIALIZABLE_CITIZENS = "arg_extra_serializable_citizens";
 
     private WidgetsHelper widgetsHelper;
-    private ServiceHelper serviceHelper;
-    private FragmentManager supportFragmentManager;
+    private FragmentManager fragmentManager;
 
     private ArrayList<Citizen> citizens;
 
@@ -40,46 +42,48 @@ public class MainActivity extends AppCompatActivity implements AppRecyclerAdapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        installCallback();
         initialiseObjects();
-        installCallbacks();
-        openCitizensListFragment();
-        serviceHelper.startService();
+        registerBroadcastReceiver();
+        startService();
+        openCitizensListFragment(savedInstanceState);
+    }
+
+    private void installCallback() {
+        AppRecyclerAdapter.registerCallbackRecyclerAdapter(this);
     }
 
     private void initialiseObjects() {
         widgetsHelper = new WidgetsHelper(this);
-        serviceHelper = new ServiceHelper(this);
-        supportFragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
     }
 
-    private void installCallbacks() {
-        AppRecyclerAdapter.listenerCallback(this);
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter(BROADCAST_ACTION);
+        registerReceiver(receiver, filter);
     }
 
-    private void openCitizensListFragment() {
-        supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, new ListCitizensFragment())
-                .commit();
+    private void startService() {
+        Intent intent = new Intent(this, AppService.class);
+        startService(intent);
+    }
+
+    private void openCitizensListFragment(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, new ListCitizensFragment())
+                    .commit();
+        }
     }
 
     @Override
     public void onClickingItem(Citizen citizen) {
-        CitizenFragment citizenFragment = new CitizenFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ARG_CITIZEN, citizen);
-        citizenFragment.setArguments(bundle);
-
-        replaceFragment(citizenFragment);
-    }
-
-    public void openSettingsFragment() {
-        replaceFragment(new SettingsFragment());
+        CitizenFragment fragment = CitizenFragment.newInstance(citizen);
+        replaceFragment(fragment);
     }
 
     private void replaceFragment(Fragment fragment) {
-        supportFragmentManager
+        fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
                         R.anim.enter_fg_slide_from_bottom,
@@ -92,23 +96,31 @@ public class MainActivity extends AppCompatActivity implements AppRecyclerAdapte
                 .commit();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void openSettingsFragment() {
+        replaceFragment(new SettingsFragment());
+    }
 
-        if (requestCode == REQUEST_SERVICE && resultCode == RESULT_SERVICE_OK) {
-            Bundle bundle = data.getBundleExtra(KEY_EXTRA);
+    @SuppressWarnings("unchecked")
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Bundle bundle = intent.getBundleExtra(ARG_EXTRA_CITIZENS);
             if (bundle != null) {
-                citizens = (ArrayList<Citizen>) bundle.getSerializable(KEY_SERIALIZABLE);
+                citizens = (ArrayList<Citizen>) bundle.getSerializable(ARG_EXTRA_SERIALIZABLE_CITIZENS);
             }
         }
-    }
+    };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        serviceHelper.stopService();
+        unregisterReceiver(receiver);
+        stopService();
+    }
+
+    private void stopService() {
+        stopService(new Intent(this, AppService.class));
     }
 
     public WidgetsHelper getWidgetsHelper() {
