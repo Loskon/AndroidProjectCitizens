@@ -28,12 +28,12 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_baseline_group_add_24"
-            app:backgroundTint="@color/light_blue"
+            app:backgroundTint="@color/material_blue"
             app:borderWidth="2dp"
             app:layout_anchor="@id/bottom_app_bar"
-            app:rippleColor="@color/ripple_light_blue"
-            app:tint="@color/light_blue"
-            tools:ignore="ContentDescription" />
+            app:rippleColor="?attr/colorControlHighlight"
+            app:tint="@color/material_blue"
+            tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_app_bar"

@@ -12,20 +12,21 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="@string/fg_settings_period"
-        android:textColor="@color/light_blue"
+        android:textColor="@color/material_blue"
         app:layout_constraintBottom_toTopOf="@+id/tv_val_period"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/tv_val_period"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:background="@drawable/bg_tv_rounded"
+        android:background="@drawable/rounded_background"
         android:gravity="center"
         android:padding="4dp"
         android:text="10"
@@ -52,7 +53,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_val_period"
         app:thumbRadius="@dimen/slider_thumb_radius"
-        app:tickVisible="false" />
+        app:tickVisible="false"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/tv_header_range"
@@ -60,12 +62,13 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="@string/fg_settings_range"
-        android:textColor="@color/light_blue"
+        android:textColor="@color/material_blue"
         app:labelBehavior="gone"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slider_period" />
+        app:layout_constraintTop_toBottomOf="@+id/slider_period"
+        tools:ignore="TextContrastCheck" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -84,7 +87,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:background="@drawable/bg_tv_rounded"
+            android:background="@drawable/rounded_background"
             android:gravity="center"
             android:padding="4dp"
             android:text="19"
@@ -97,7 +100,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_tv_rounded"
+            android:background="@drawable/rounded_background"
             android:gravity="center"
             android:padding="4dp"
             android:text="60"
@@ -121,6 +124,7 @@
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
         app:thumbRadius="@dimen/slider_thumb_radius"
         app:tickVisible="false"
-        app:values="@array/range_slider_val" />
+        app:values="@array/range_slider_val"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

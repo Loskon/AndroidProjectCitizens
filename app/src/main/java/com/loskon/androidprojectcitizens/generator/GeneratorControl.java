@@ -1,8 +1,6 @@
 package com.loskon.androidprojectcitizens.generator;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.util.Log;
 
 import com.loskon.androidprojectcitizens.ui.helper.SharedHelper;
 
@@ -14,23 +12,18 @@ import java.util.Timer;
 
 public class GeneratorControl {
 
-    private static final String TAG = "MyLogs_" + GeneratorControl.class.getSimpleName();
-
     private final Context context;
 
     private Timer timer;
-    private final PendingIntent pendingIntent;
 
-    public GeneratorControl(Context context, PendingIntent pendingIntent) {
+    public GeneratorControl(Context context) {
         this.context = context;
-        this.pendingIntent = pendingIntent;
     }
 
     public void start() {
         int period = SharedHelper.getGenerationPeriod(context);
-        Log.d(TAG, "period: " + period);
         timer = new Timer();
-        timer.schedule(new GeneratorTask(context, pendingIntent), 0, period * 1000L);
+        timer.schedule(new GeneratorTask(context), 0, period * 1000L);
     }
 
     public void stop() {

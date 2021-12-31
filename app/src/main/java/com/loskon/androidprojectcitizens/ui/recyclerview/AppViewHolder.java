@@ -2,7 +2,7 @@ package com.loskon.androidprojectcitizens.ui.recyclerview;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.loskon.androidprojectcitizens.databinding.ItemCitizensBinding;
+import com.loskon.androidprojectcitizens.databinding.RowCitizensBinding;
 import com.loskon.androidprojectcitizens.model.Citizen;
 
 /**
@@ -11,9 +11,9 @@ import com.loskon.androidprojectcitizens.model.Citizen;
 
 public class AppViewHolder extends RecyclerView.ViewHolder {
 
-    private final ItemCitizensBinding binding;
+    private final RowCitizensBinding binding;
 
-    public AppViewHolder(ItemCitizensBinding binding) {
+    public AppViewHolder(RowCitizensBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
     }

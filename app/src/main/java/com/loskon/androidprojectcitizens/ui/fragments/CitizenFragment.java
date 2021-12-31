@@ -39,15 +39,12 @@ public class CitizenFragment extends Fragment {
     public void onAttach(@NonNull @NotNull Context context) {
         super.onAttach(context);
         activity = (MainActivity) context;
-        getCitizen();
+        getPassedArguments();
     }
 
-    private void getCitizen() {
+    private void getPassedArguments() {
         Bundle bundle = getArguments();
-
-        if (bundle != null) {
-            citizen = (Citizen) getArguments().getSerializable(ARG_CITIZEN);
-        }
+        if (bundle != null) citizen = (Citizen) bundle.getSerializable(ARG_CITIZEN);
     }
 
     public View onCreateView(@NotNull LayoutInflater inflater,
@@ -63,7 +60,7 @@ public class CitizenFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initialiseWidgets();
-        setupWidgets();
+        configureWidgets();
         installHandlers();
     }
 
@@ -72,11 +69,21 @@ public class CitizenFragment extends Fragment {
         bottomAppBar = widgetsHelper.getBottomAppBar();
     }
 
-    private void setupWidgets() {
+    private void configureWidgets() {
         widgetsHelper.isWidgetsVisible(false);
     }
 
     private void installHandlers() {
         bottomAppBar.setNavigationOnClickListener(v -> activity.onBackPressed());
+    }
+
+    public static CitizenFragment newInstance(Citizen citizen) {
+        CitizenFragment fragment = new CitizenFragment();
+
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CITIZEN, citizen);
+        fragment.setArguments(args);
+
+        return fragment;
     }
 }

@@ -10,24 +10,20 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.loskon.androidprojectcitizens.R
-import com.loskon.androidprojectcitizens.R.style.BaseBottomSheetDialog
 import com.loskon.androidprojectcitizens.ui.fragments.SettingsFragment
+import com.loskon.androidprojectcitizens.ui.fragments.SettingsFragment.*
 import com.loskon.androidprojectcitizens.utils.showKeyboard
 
 /**
  * Нижнее диалоговое окно для ввода значений
  */
 
-const val TYPE_PERIOD = "type_period"
-const val TYPE_RANGE_MIN = "type_range_min"
-const val TYPE_RANGE_MAX = "type_range_max"
-
 class SheetDialog(
     private val context: Context,
     private val fragment: SettingsFragment
 ) {
 
-    private val dialog: BottomSheetDialog = BottomSheetDialog(context, BaseBottomSheetDialog)
+    private val dialog: BottomSheetDialog = BottomSheetDialog(context, R.style.RoundedSheetDialog)
     private val behavior: BottomSheetBehavior<FrameLayout> = dialog.behavior
     private val view = View.inflate(context, R.layout.sheet_dialog_settings, null)
 

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="range_slider_val">
         <item>@integer/def_val_range_min</item>

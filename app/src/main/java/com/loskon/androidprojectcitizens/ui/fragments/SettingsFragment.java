@@ -1,12 +1,7 @@
 package com.loskon.androidprojectcitizens.ui.fragments;
 
-import static com.loskon.androidprojectcitizens.ui.sheets.SheetDialogKt.TYPE_PERIOD;
-import static com.loskon.androidprojectcitizens.ui.sheets.SheetDialogKt.TYPE_RANGE_MAX;
-import static com.loskon.androidprojectcitizens.ui.sheets.SheetDialogKt.TYPE_RANGE_MIN;
-
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +26,9 @@ import com.loskon.androidprojectcitizens.ui.sheets.SheetDialog;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "MyLogs_" + SettingsFragment.class.getSimpleName();
+    public static final String TYPE_PERIOD = "type_period";
+    public static final String TYPE_RANGE_MIN = "type_range_min";
+    public static final String TYPE_RANGE_MAX = "type_range_max";
 
     private MainActivity activity;
     private WidgetsHelper widgetsHelper;
@@ -61,11 +58,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        initialiseViews(view);
+        setupViewDeclaration(view);
         return view;
     }
 
-    private void initialiseViews(View view) {
+    private void setupViewDeclaration(View view) {
         sliderPeriod = view.findViewById(R.id.slider_period);
         sliderRange = view.findViewById(R.id.slider_range);
         tvPeriod = view.findViewById(R.id.tv_val_period);
@@ -172,22 +169,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private void savingChangedValues() {
         // Сохранение только измененных значений
         if (prePeriod != prePeriodOld) SharedHelper.setGenPeriod(activity, prePeriod);
-        Log.d(TAG, "genPeriod: " + prePeriod);
-
         if (preMin != preMinOld) SharedHelper.setAgeRangeMin(activity, preMin);
-        Log.d(TAG, "preMin: " + preMin);
-
         if (preMax != preMaxOld) SharedHelper.setAgeRangeMax(activity, preMax);
-        Log.d(TAG, "preMax: " + preMax);
     }
 
     private void restartingGenerator() {
         boolean hasCallback = (preMax != preMaxOld) |
                 (preMin != preMinOld) | (prePeriod != prePeriodOld);
 
-        if (hasCallback) {
-            if (callback != null) callback.onRestartGenerator();
-        }
+        if (hasCallback && callback != null) callback.onRestartGenerator();
     }
 
     public void setSlidersValues(String type, int enteredValue, int neighboringValue) {
@@ -209,13 +199,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         installValuesInWidgets();
     }
 
-    private static CallbackSettings callback;
+    private static SettingsCallback callback;
 
-    public static void listenerCallback(CallbackSettings callbackSettings) {
-        SettingsFragment.callback = callbackSettings;
-    }
-
-    public interface CallbackSettings {
-        void onRestartGenerator();
+    public static void registerCallbackSettings(SettingsCallback callback) {
+        SettingsFragment.callback = callback;
     }
 }

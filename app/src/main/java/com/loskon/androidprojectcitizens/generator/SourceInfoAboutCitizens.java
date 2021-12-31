@@ -1,12 +1,11 @@
 package com.loskon.androidprojectcitizens.generator;
 
 /**
- * Хранилище исходных данных
+ * Хранилище исходных данных о гражданах
  */
 
-public class SourceCitizenStore {
+public class SourceInfoAboutCitizens {
 
-    // Фамилии (несклоняемые)
     private final String[] lastNameGen = {
             "Задворных",
             "Бойко",
@@ -39,7 +38,6 @@ public class SourceCitizenStore {
         return lastNameGen;
     }
 
-    // Имена
     private final String[] firstNameGen = {
             "Яна",
             "Иван",
@@ -73,7 +71,6 @@ public class SourceCitizenStore {
         return firstNameGen;
     }
 
-    // Названия предприятий
     private final String[] workGen = {
             "ООО «ЛУКОЙЛ-ПЕРМЬ»",
             "АО «ЭР-ТЕЛЕКОМ ХОЛДИНГ»",
@@ -106,7 +103,6 @@ public class SourceCitizenStore {
         return workGen;
     }
 
-    // Названия районов
     private final String[] districtNameGen = {
             "Дзержинский",
             "Индустриальный",

@@ -3,7 +3,6 @@ package com.loskon.androidprojectcitizens.ui.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,9 +39,7 @@ import java.util.ArrayList;
 
 public class ListCitizensFragment extends Fragment {
 
-    private static final String TAG = "MyLogs_" + ListCitizensFragment.class.getSimpleName();
-
-    private static final String SAVED_PROGRESS_VISIBLE = "saved_progress_visible";
+    private static final String ARG_EXTRA_PROGRESS = "arg_extra_progress";
     private final Bundle bundleState = new Bundle();
 
     private MainActivity activity;
@@ -59,7 +56,7 @@ public class ListCitizensFragment extends Fragment {
 
     private final AppRecyclerAdapter adapter = new AppRecyclerAdapter();
     private final Handler handler = new Handler();
-    private ArrayList<Citizen> citizens = new ArrayList<>();
+    private ArrayList<Citizen> citizens;
 
     private boolean hasFirstClick = false;
     private boolean isProgressVisible = false;
@@ -131,32 +128,30 @@ public class ListCitizensFragment extends Fragment {
     }
 
     private void performLoadingList() {
-        isProgressVisible = true;
         changeVisibleIndicator(true);
         startHandler();
-        if (!hasFirstClick) firstClick(); // Смена иконки fab после первой загрузке списка
+        if (!hasFirstClick) changeFabIcon();
     }
 
     private void changeVisibleIndicator(boolean isVisible) {
+        isProgressVisible = isVisible;
         WidgetUtils.setVisibleView(indicator, isVisible);
     }
 
     private void startHandler() {
         int seconds = (int) (Math.random() * 4 + 1); // Время загрузки списка от 1 до 4 секунд
-        Log.d(TAG, "seconds: " + seconds);
         handler.removeCallbacksAndMessages(null);
         handler.postDelayed(this::performHandlerMethod, seconds * 1000L);
     }
 
     private void performHandlerMethod() {
-        isProgressVisible = false;
         changeVisibleIndicator(false);
-        bundleState.clear(); // Сброс сохранения состояний при обновлении
-        recyclerView.setLayoutAnimation(animController); // Показ анимации только при обновлении
+        bundleState.clear();
+        recyclerView.setLayoutAnimation(animController); // Показ анимации при обновлении списка
         viewModel.setCitizens(citizens);
     }
 
-    private void firstClick() {
+    private void changeFabIcon() {
         hasFirstClick = true;
         widgetsHelper.setIconFab();
     }
@@ -192,16 +187,16 @@ public class ListCitizensFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        onResumeAction();
+        restoreStateViews();
     }
 
-    private void onResumeAction() {
+    private void restoreStateViews() {
         widgetsHelper.isWidgetsVisible(true);
         restoreIndicatorState();
     }
 
     private void restoreIndicatorState() {
-        isProgressVisible = bundleState.getBoolean(SAVED_PROGRESS_VISIBLE);
+        isProgressVisible = bundleState.getBoolean(ARG_EXTRA_PROGRESS);
         changeVisibleIndicator(isProgressVisible);
     }
 
@@ -213,7 +208,7 @@ public class ListCitizensFragment extends Fragment {
 
     private void saveIndicatorState() {
         if (layoutManager != null) {
-            bundleState.putBoolean(SAVED_PROGRESS_VISIBLE, isProgressVisible);
+            bundleState.putBoolean(ARG_EXTRA_PROGRESS, isProgressVisible);
         }
     }
 }

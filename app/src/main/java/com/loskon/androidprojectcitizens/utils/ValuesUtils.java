@@ -27,7 +27,7 @@ public class ValuesUtils {
         return context.getString(R.string.Item_age, age);
     }
 
-    public static String getThereCar(Context context, boolean isThereCar) {
+    public static String getAvailabilityCar(Context context, boolean isThereCar) {
         String thereCar;
 
         if (isThereCar) {

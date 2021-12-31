@@ -1,10 +1,12 @@
 package com.loskon.androidprojectcitizens.generator;
 
-import android.app.PendingIntent;
+import static com.loskon.androidprojectcitizens.ui.activity.MainActivity.ARG_EXTRA_CITIZENS;
+import static com.loskon.androidprojectcitizens.ui.activity.MainActivity.BROADCAST_ACTION;
+import static com.loskon.androidprojectcitizens.ui.activity.MainActivity.ARG_EXTRA_SERIALIZABLE_CITIZENS;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.loskon.androidprojectcitizens.model.Citizen;
 import com.loskon.androidprojectcitizens.ui.helper.SharedHelper;
@@ -12,22 +14,15 @@ import com.loskon.androidprojectcitizens.ui.helper.SharedHelper;
 import java.util.ArrayList;
 import java.util.TimerTask;
 
-import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.KEY_EXTRA;
-import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.KEY_SERIALIZABLE;
-import static com.loskon.androidprojectcitizens.ui.helper.ServiceHelper.RESULT_SERVICE_OK;
-
 /**
  * Генератор граждан
  */
 
 public class GeneratorTask extends TimerTask {
 
-    private static final String TAG = "MyLogs_" + GeneratorTask.class.getSimpleName();
-
     private final Context context;
-    private final PendingIntent pendingIntent;
 
-    private final SourceCitizenStore store = new SourceCitizenStore();
+    private final SourceInfoAboutCitizens source = new SourceInfoAboutCitizens();
 
     private String[] lastNameGen;
     private String[] firstNameGen;
@@ -40,9 +35,8 @@ public class GeneratorTask extends TimerTask {
     private int workGenSize;
     private int districtNameGenSize;
 
-    public GeneratorTask(Context context, PendingIntent pendingIntent) {
+    public GeneratorTask(Context context) {
         this.context = context;
-        this.pendingIntent = pendingIntent;
 
         initArrayValues();
         initArrayLength();
@@ -50,10 +44,10 @@ public class GeneratorTask extends TimerTask {
     }
 
     private void initArrayValues() {
-        lastNameGen = store.getLastNameGen();
-        firstNameGen = store.getFirstNameGen();
-        workGen = store.getWorkGen();
-        districtNameGen = store.getDistrictNameGen();
+        lastNameGen = source.getLastNameGen();
+        firstNameGen = source.getFirstNameGen();
+        workGen = source.getWorkGen();
+        districtNameGen = source.getDistrictNameGen();
     }
 
     private void initArrayLength() {
@@ -70,29 +64,25 @@ public class GeneratorTask extends TimerTask {
     private void initGenSettings() {
         ageMinGen = SharedHelper.getAgeRangeMin(context);
         ageMaxGen = SharedHelper.getAgeRangeMax(context);
-        Log.d(TAG, "ageMinGen: " + ageMinGen);
-        Log.d(TAG, "ageMaxGen: " + ageMaxGen);
     }
 
     @Override
     public void run() {
-        performRunTimer();
+        performGeneration();
     }
 
-    private void performRunTimer() {
-        Intent intent = new Intent();
+    private void performGeneration() {
+        Intent intent = new Intent(BROADCAST_ACTION);
         Bundle bundle = new Bundle();
         int rangeGen = getRandomInt(10, 100);
 
-        bundle.putSerializable(KEY_SERIALIZABLE, getGeneratedList(rangeGen));
-        intent.putExtra(KEY_EXTRA, bundle);
+        bundle.putSerializable(ARG_EXTRA_SERIALIZABLE_CITIZENS, getGeneratedList(rangeGen));
+        intent.putExtra(ARG_EXTRA_CITIZENS, bundle);
 
         try {
-            pendingIntent.send(context, RESULT_SERVICE_OK, intent);
-            Log.d(TAG, "Generator is working, rangeGen: " + rangeGen);
+            context.sendBroadcast(intent);
         } catch (Exception exception) {
             exception.printStackTrace();
-            Log.d(TAG, "Generator is not working!", exception);
         }
     }
 
@@ -100,22 +90,22 @@ public class GeneratorTask extends TimerTask {
         ArrayList<Citizen> citizens = new ArrayList<>(rangeGen);
 
         for (int i = 0; i < rangeGen; i++) {
-            String lastRandomName = lastNameGen[getRandomInt(0, lastNameGenSize)]; // Фамилия
-            String firstRandomName = firstNameGen[getRandomInt(0, firstNameGenSize)]; // Имя
-            int ageRandom = getRandomInt(ageMinGen, ageMaxGen); // Возраст
-            String workRandomName = workGen[getRandomInt(0, workGenSize)]; // Место работы
-            boolean sexRandom = getRandomBoolean(); // Пол
-            String districtRandomName = districtNameGen[getRandomInt(0, districtNameGenSize)]; // Район проживания
-            boolean carRandom = getRandomBoolean(); // Наличие машины
+            String lastRandomName = lastNameGen[getRandomInt(0, lastNameGenSize)];
+            String firstRandomName = firstNameGen[getRandomInt(0, firstNameGenSize)];
+            int ageRandom = getRandomInt(ageMinGen, ageMaxGen);
+            String workRandomName = workGen[getRandomInt(0, workGenSize)];
+            boolean sexRandom = getRandomBoolean();
+            String districtRandomName = districtNameGen[getRandomInt(0, districtNameGenSize)];
+            boolean carRandom = getRandomBoolean();
 
             Citizen citizen = new Citizen();
             citizen.setFirstName(firstRandomName);
             citizen.setLastName(lastRandomName);
             citizen.setMale(sexRandom);
             citizen.setAge(ageRandom);
-            citizen.setWorkName(workRandomName);
-            citizen.setDistrictName(districtRandomName);
-            citizen.setThereCar(carRandom);
+            citizen.setWorkTitle(workRandomName);
+            citizen.setDistrictTitle(districtRandomName);
+            citizen.setAvailabilityCar(carRandom);
             citizens.add(citizen);
         }
 

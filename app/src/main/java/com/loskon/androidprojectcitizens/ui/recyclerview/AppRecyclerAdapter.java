@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.loskon.androidprojectcitizens.R;
-import com.loskon.androidprojectcitizens.databinding.ItemCitizensBinding;
+import com.loskon.androidprojectcitizens.databinding.RowCitizensBinding;
 import com.loskon.androidprojectcitizens.model.Citizen;
 
 import java.util.List;
@@ -28,8 +28,8 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter<AppViewHolder> {
     @Override
     public AppViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ItemCitizensBinding binding = DataBindingUtil.inflate(inflater,
-                R.layout.item_citizens, parent, false);
+        RowCitizensBinding binding = DataBindingUtil.inflate(inflater,
+                R.layout.row_citizens, parent, false);
         return new AppViewHolder(binding);
     }
 
@@ -46,11 +46,11 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter<AppViewHolder> {
 
     public void setCitizensList(List<Citizen> citizens) {
         this.citizens = citizens;
-        updateChangedList();
+        updateList();
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void updateChangedList() {
+    private void updateList() {
         notifyDataSetChanged();
     }
 
@@ -59,13 +59,9 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter<AppViewHolder> {
         return citizens.size();
     }
 
-    private static CallbackAdapter callback;
+    private static RecyclerAdapterCallback callback;
 
-    public static void listenerCallback(CallbackAdapter callbackAdapter) {
+    public static void registerCallbackRecyclerAdapter(RecyclerAdapterCallback callbackAdapter) {
         AppRecyclerAdapter.callback = callbackAdapter;
-    }
-
-    public interface CallbackAdapter {
-        void onClickingItem(Citizen citizen);
     }
 }

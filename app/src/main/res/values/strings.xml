@@ -1,12 +1,11 @@
 <resources>
+    <!-- App. -->
     <string name="app_name">Граждане</string>
 
-
-    <!-- Fragment -->
+    <!-- Fragments. -->
     <!-- fragment_settings -->
     <string name="fg_settings_period">Период генерации (P)</string>
     <string name="fg_settings_range">Диапазон возраста (A)</string>
-
     <!-- fragment_citizen -->
     <string name="fg_citizen_second_info">Дополнительная информация</string>
     <string name="fg_citizen_age">Возраст</string>
@@ -17,7 +16,6 @@
     <string name="fg_citizen_female">Женский</string>
     <string name="fg_citizen_yes">Да</string>
     <string name="fg_citizen_no">Нет</string>
-
     <!-- fragment_list_citizens -->
     <string name="fg_list_empty">Список пуст</string>
     <string name="fg_list_error">Ошибка! Не удалось загрузить список</string>
@@ -26,13 +24,11 @@
     <string name="item_sex_female">Пол: женский</string>
     <string name="Item_age">Возраст: %1$d</string>
 
-
     <!-- Menu -->
     <!-- menu_settings -->
     <string name="menu_settings_open">Настройки</string>
 
-
-    <!-- Sheets -->
+    <!-- Sheet -->
     <!-- sheet_dialog_settings -->
     <string name="sh_settings_hint">Введите значение от %1$d до %2$d</string>
     <string name="sh_settings_error">Ошибка! Введите корректное число!</string>

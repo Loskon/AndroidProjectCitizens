@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Period -->
+    <!-- Period. -->
     <integer name="min_val_generation_period">2</integer>
     <integer name="max_val_generation_period">30</integer>
     <integer name="def_val_generation_period">10</integer>
 
-    <!-- Range -->
+    <!-- Range. -->
     <integer name="min_val_range_min">18</integer>
     <integer name="max_val_range_min">60</integer>
     <integer name="def_val_range_min">22</integer>
