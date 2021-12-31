@@ -11,13 +11,10 @@ public class Citizen implements Serializable {
     private String lastName;
     private String firstName;
     private int age;
-    private String workName;
+    private String workTitle;
     private boolean isMale;
-    private String districtName;
-    private boolean isThereCar;
-
-    public Citizen() {
-    }
+    private String districtTitle;
+    private boolean hasCar;
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -27,47 +24,47 @@ public class Citizen implements Serializable {
         this.firstName = firstName;
     }
 
-    public int getAge() {
-        return age;
-    }
-
     public void setAge(int age) {
         this.age = age;
     }
 
-    public String getWorkName() {
-        return workName;
+    public void setWorkTitle(String workTitle) {
+        this.workTitle = workTitle;
     }
 
-    public void setWorkName(String workName) {
-        this.workName = workName;
+    public void setMale(boolean isMale) {
+        this.isMale = isMale;
+    }
+
+    public void setDistrictTitle(String districtTitle) {
+        this.districtTitle = districtTitle;
+    }
+
+    public void setAvailabilityCar(boolean hasCar) {
+        this.hasCar = hasCar;
+    }
+
+    public String getFullName() {
+        return lastName + " " + firstName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getWorkTitle() {
+        return workTitle;
     }
 
     public boolean isMale() {
         return isMale;
     }
 
-    public void setMale(boolean male) {
-        this.isMale = male;
+    public String getDistrictTitle() {
+        return districtTitle;
     }
 
-    public String getDistrictName() {
-        return districtName;
-    }
-
-    public void setDistrictName(String districtName) {
-        this.districtName = districtName;
-    }
-
-    public boolean isThereCar() {
-        return isThereCar;
-    }
-
-    public void setThereCar(boolean thereCar) {
-        this.isThereCar = thereCar;
-    }
-
-    public String getFullName() {
-        return lastName + " " + firstName;
+    public boolean hasCar() {
+        return hasCar;
     }
 }
