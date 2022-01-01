@@ -66,7 +66,7 @@ public class CitizenFragment extends Fragment {
 
     private void initialiseWidgets() {
         widgetsHelper = activity.getWidgetsHelper();
-        bottomAppBar = widgetsHelper.getBottomAppBar();
+        bottomAppBar = widgetsHelper.getBottomBar();
     }
 
     private void configureWidgets() {

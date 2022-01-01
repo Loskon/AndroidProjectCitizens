@@ -87,7 +87,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private void initialiseWidgets() {
         widgetsHelper = activity.getWidgetsHelper();
-        bottomAppBar = widgetsHelper.getBottomAppBar();
+        bottomAppBar = widgetsHelper.getBottomBar();
     }
 
     private void installHandlers() {
