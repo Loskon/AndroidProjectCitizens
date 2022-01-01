@@ -5,12 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.model.Citizen;
 import com.loskon.androidprojectcitizens.service.AppService;
@@ -30,11 +31,14 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements RecyclerAdapterCallback {
 
     public final static String BROADCAST_ACTION = "broadcast_action";
-    public static final String ARG_EXTRA_CITIZENS = "arg_extra_citizens";
+    public static final String ARG_EXTRA_BUNDLE_CITIZENS = "arg_extra_citizens";
     public static final String ARG_EXTRA_SERIALIZABLE_CITIZENS = "arg_extra_serializable_citizens";
 
     private WidgetsHelper widgetsHelper;
     private FragmentManager fragmentManager;
+
+    private FloatingActionButton fab;
+    private BottomAppBar bottomBar;
 
     private ArrayList<Citizen> citizens;
 
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapterCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         installCallback();
+        setupViewDeclaration();
         initialiseObjects();
         registerBroadcastReceiver();
         startService();
@@ -53,8 +58,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapterCa
         AppRecyclerAdapter.registerCallbackRecyclerAdapter(this);
     }
 
+    private void setupViewDeclaration() {
+        fab = findViewById(R.id.fab);
+        bottomBar = findViewById(R.id.bottom_app_bar);
+    }
+
     private void initialiseObjects() {
-        widgetsHelper = new WidgetsHelper(this);
+        widgetsHelper = new WidgetsHelper(this, fab, bottomBar);
         fragmentManager = getSupportFragmentManager();
     }
 
@@ -105,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapterCa
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Bundle bundle = intent.getBundleExtra(ARG_EXTRA_CITIZENS);
+            Bundle bundle = intent.getBundleExtra(ARG_EXTRA_BUNDLE_CITIZENS);
             if (bundle != null) {
                 citizens = (ArrayList<Citizen>) bundle.getSerializable(ARG_EXTRA_SERIALIZABLE_CITIZENS);
             }
@@ -114,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapterCa
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receiver);
         stopService();
+        unregisterReceiver(receiver);
+        super.onDestroy();
     }
 
     private void stopService() {
