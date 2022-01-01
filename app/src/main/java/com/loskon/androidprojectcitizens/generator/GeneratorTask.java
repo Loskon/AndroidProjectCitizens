@@ -1,6 +1,6 @@
 package com.loskon.androidprojectcitizens.generator;
 
-import static com.loskon.androidprojectcitizens.ui.activity.MainActivity.ARG_EXTRA_CITIZENS;
+import static com.loskon.androidprojectcitizens.ui.activity.MainActivity.ARG_EXTRA_BUNDLE_CITIZENS;
 import static com.loskon.androidprojectcitizens.ui.activity.MainActivity.BROADCAST_ACTION;
 import static com.loskon.androidprojectcitizens.ui.activity.MainActivity.ARG_EXTRA_SERIALIZABLE_CITIZENS;
 
@@ -74,16 +74,14 @@ public class GeneratorTask extends TimerTask {
     private void performGeneration() {
         Intent intent = new Intent(BROADCAST_ACTION);
         Bundle bundle = new Bundle();
+
         int rangeGen = getRandomInt(10, 100);
+        ArrayList<Citizen> citizens = getGeneratedList(rangeGen);
 
-        bundle.putSerializable(ARG_EXTRA_SERIALIZABLE_CITIZENS, getGeneratedList(rangeGen));
-        intent.putExtra(ARG_EXTRA_CITIZENS, bundle);
+        bundle.putSerializable(ARG_EXTRA_SERIALIZABLE_CITIZENS, citizens);
+        intent.putExtra(ARG_EXTRA_BUNDLE_CITIZENS, bundle);
 
-        try {
-            context.sendBroadcast(intent);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        context.sendBroadcast(intent);
     }
 
     private ArrayList<Citizen> getGeneratedList(int rangeGen) {
