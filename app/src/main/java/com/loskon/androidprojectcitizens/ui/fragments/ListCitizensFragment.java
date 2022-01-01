@@ -103,7 +103,7 @@ public class ListCitizensFragment extends Fragment {
     private void initialiseWidgets() {
         widgetsHelper = activity.getWidgetsHelper();
         fab = widgetsHelper.getFab();
-        bottomAppBar = widgetsHelper.getBottomAppBar();
+        bottomAppBar = widgetsHelper.getBottomBar();
     }
 
     private void configureAnimController() {
@@ -119,7 +119,7 @@ public class ListCitizensFragment extends Fragment {
         citizens = activity.getCitizens();
 
         if (citizens.size() != 0) {
-            performLoadingList();
+            startLoadingListCitizens();
         } else {
             callErrorMessage();
         }
@@ -127,9 +127,9 @@ public class ListCitizensFragment extends Fragment {
         widgetsHelper.startAnimateFab();
     }
 
-    private void performLoadingList() {
+    private void startLoadingListCitizens() {
         changeVisibleIndicator(true);
-        startHandler();
+        configureHandlerForLoading();
         if (!hasFirstClick) changeFabIcon();
     }
 
@@ -138,16 +138,17 @@ public class ListCitizensFragment extends Fragment {
         WidgetUtils.setVisibleView(indicator, isVisible);
     }
 
-    private void startHandler() {
+    private void configureHandlerForLoading() {
         int seconds = (int) (Math.random() * 4 + 1); // Время загрузки списка от 1 до 4 секунд
         handler.removeCallbacksAndMessages(null);
-        handler.postDelayed(this::performHandlerMethod, seconds * 1000L);
+        handler.postDelayed(this::performLoadingListCitizens, seconds * 1000L);
     }
 
-    private void performHandlerMethod() {
+    private void performLoadingListCitizens() {
         changeVisibleIndicator(false);
-        bundleState.clear();
+        recyclerView.scrollToPosition(0);
         recyclerView.setLayoutAnimation(animController); // Показ анимации при обновлении списка
+        bundleState.clear(); // Очищаем, чтобы убрать бесконечный показ индикатора прогресса
         viewModel.setCitizens(citizens);
     }
 
