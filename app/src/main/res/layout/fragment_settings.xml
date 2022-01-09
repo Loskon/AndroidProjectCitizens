@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/height_for_bottom_app_bar">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tv_header_period"

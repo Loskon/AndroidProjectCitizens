@@ -12,15 +12,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/height_for_bottom_app_bar">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/include_primary"
             layout="@layout/inc_card_primary"
-            app:citizen="@{citizen}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:citizen="@{citizen}"
             app:layout_constraintBottom_toTopOf="@+id/tv_header_second_info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -46,9 +45,9 @@
         <include
             android:id="@+id/include_secondary"
             layout="@layout/inc_card_secondary"
-            app:citizen="@{citizen}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:citizen="@{citizen}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

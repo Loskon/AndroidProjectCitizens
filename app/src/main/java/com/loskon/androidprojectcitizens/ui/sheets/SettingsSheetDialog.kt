@@ -18,7 +18,7 @@ import com.loskon.androidprojectcitizens.utils.showKeyboard
  * Нижнее диалоговое окно для ввода значений
  */
 
-class SheetDialog(
+class SettingsSheetDialog(
     private val context: Context,
     private val fragment: SettingsFragment
 ) {
@@ -57,37 +57,23 @@ class SheetDialog(
 
     private fun buildingSheetDialog() {
         dialog.setContentView(view)
-
-        installHandlers()
-        setupMinAndMaxValues()
-        setupHint()
-
+        installHandlersForViews()
+        configureMinAndMaxValues()
+        installHint()
         dialog.show()
     }
 
-    private fun installHandlers() {
-        editText.doOnTextChanged { _, _, _, _ ->
-            run {
-                errorManagement()
-            }
-        }
-
-        btnOk.setOnClickListener {
-            checkingEnteredValue()
-        }
-
-        btnCancel.setOnClickListener {
-            dialog.dismiss()
-        }
+    private fun installHandlersForViews() {
+        editText.doOnTextChanged { _, _, _, _ -> run { disableErrorNotification() } }
+        btnOk.setOnClickListener { onOkBtnClick() }
+        btnCancel.setOnClickListener { dialog.dismiss() }
     }
 
-    private fun errorManagement() {
-        if (inputLayout.error != null) {
-            inputLayout.isErrorEnabled = false
-        }
+    private fun disableErrorNotification() {
+        if (inputLayout.error != null) inputLayout.isErrorEnabled = false
     }
 
-    private fun checkingEnteredValue() {
+    private fun onOkBtnClick() {
         val text: String = editText.text.toString().trim()
         val enteredValue: Int = text.getNumberCharacters()
 
@@ -98,26 +84,20 @@ class SheetDialog(
             callingErrorMessage()
         } else {
             setEnteredValue(enteredValue)
-        }
-    }
-
-    private fun callingErrorMessage() {
-        inputLayout.apply {
-            error = context.getString(R.string.sh_settings_error)
-            isErrorEnabled = true
+            dialog.dismiss()
         }
     }
 
     private fun String.getNumberCharacters(): Int {
-        return if (isNotEmpty()) {
-            toInt()
-        } else {
-            0
-        }
+        return if (isNotEmpty()) toInt() else 0
+    }
+
+    private fun callingErrorMessage() {
+        inputLayout.error = context.getString(R.string.sh_settings_error)
+        inputLayout.isErrorEnabled = true
     }
 
     private fun setEnteredValue(enteredValue: Int) {
-
         val newNeighboringValue: Int = when {
             (typeSlider == TYPE_RANGE_MIN) and (enteredValue >= oldNeighboringValue) -> {
                 enteredValue + 1
@@ -131,11 +111,9 @@ class SheetDialog(
         }
 
         fragment.setSlidersValues(typeSlider, enteredValue, newNeighboringValue)
-
-        dialog.dismiss()
     }
 
-    private fun setupMinAndMaxValues() {
+    private fun configureMinAndMaxValues() {
         when (typeSlider) {
 
             TYPE_PERIOD -> {
@@ -157,7 +135,7 @@ class SheetDialog(
 
     private fun getValueInteger(integerId: Int) = context.resources.getInteger(integerId)
 
-    private fun setupHint() {
+    private fun installHint() {
         inputLayout.hint = context.getString(R.string.sh_settings_hint, min, max)
     }
 }

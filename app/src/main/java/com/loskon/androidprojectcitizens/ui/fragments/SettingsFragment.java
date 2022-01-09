@@ -18,7 +18,7 @@ import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.ui.activity.MainActivity;
 import com.loskon.androidprojectcitizens.ui.helper.SharedHelper;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
-import com.loskon.androidprojectcitizens.ui.sheets.SheetDialog;
+import com.loskon.androidprojectcitizens.ui.sheets.SettingsSheetDialog;
 
 /**
  * Форма настроек генератора
@@ -104,11 +104,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         int id = view.getId();
 
         if (id == R.id.tv_val_period) {
-            new SheetDialog(activity, this).show(TYPE_PERIOD);
+            new SettingsSheetDialog(activity, this).show(TYPE_PERIOD);
         } else if (id == R.id.tv_val_range_min) {
-            new SheetDialog(activity, this).show(TYPE_RANGE_MIN, preMax);
+            new SettingsSheetDialog(activity, this).show(TYPE_RANGE_MIN, preMax);
         } else if (id == R.id.tv_val_range_max) {
-            new SheetDialog(activity, this).show(TYPE_RANGE_MAX, preMin);
+            new SettingsSheetDialog(activity, this).show(TYPE_RANGE_MAX, preMin);
         }
     }
 

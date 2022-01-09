@@ -6,7 +6,8 @@ import com.loskon.androidprojectcitizens.R;
 
 public class ValuesUtils {
 
-    public static String getSexName(Context context, boolean isMale) {
+    //--- row_citizens -----------------------------------------------------------------------------
+    public static String getGenderPerson(Context context, boolean isMale) {
         String string;
 
         if (isMale) {
@@ -22,6 +23,7 @@ public class ValuesUtils {
         return context.getString(R.string.row_age, age);
     }
 
+    //--- inc_card_secondary -----------------------------------------------------------------------
     public static String getAvailabilityCar(Context context, boolean hasCar) {
         String string;
 
@@ -29,6 +31,18 @@ public class ValuesUtils {
             string = context.getString(R.string.fg_citizen_yes);
         } else {
             string = context.getString(R.string.fg_citizen_no);
+        }
+
+        return string;
+    }
+
+    public static String getShortGenderPerson(Context context, boolean isMale) {
+        String string;
+
+        if (isMale) {
+            string = context.getString(R.string.fg_citizen_male);
+        } else {
+            string = context.getString(R.string.fg_citizen_female);
         }
 
         return string;

@@ -59,7 +59,7 @@
                     android:paddingTop="4dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="4dp"
-                    android:text="@{ValuesUtils.getAge(context, citizen.age)}"/>
+                    android:text="@{Integer.toString(citizen.age)}"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                     android:paddingTop="4dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="4dp"
-                    android:text="@{ValuesUtils.getSexName(context, citizen.male)}" />
+                    android:text="@{ValuesUtils.getShortGenderPerson(context, citizen.male)}" />
 
                 <TextView
                     android:layout_width="match_parent"

@@ -51,7 +51,7 @@
                 android:layout_marginEnd="16dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{ValuesUtils.getSexName(context, citizen.male)}" />
+                android:text="@{ValuesUtils.getGenderPerson(context, citizen.male)}" />
 
             <TextView
                 android:id="@+id/tv_card_age"
