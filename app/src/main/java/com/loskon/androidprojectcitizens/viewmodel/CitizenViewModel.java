@@ -13,11 +13,7 @@ import java.util.ArrayList;
 
 public class CitizenViewModel extends ViewModel {
 
-    private final MutableLiveData<ArrayList<Citizen>> liveData;
-
-    public CitizenViewModel() {
-        liveData = new MutableLiveData<>();
-    }
+    private final MutableLiveData<ArrayList<Citizen>> liveData = new MutableLiveData<>();
 
     public void setCitizens(ArrayList<Citizen> citizenArrayList) {
         liveData.setValue(citizenArrayList);
