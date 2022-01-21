@@ -28,7 +28,7 @@ import com.loskon.androidprojectcitizens.model.Citizen;
 import com.loskon.androidprojectcitizens.ui.activity.MainActivity;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
 import com.loskon.androidprojectcitizens.ui.recyclerview.CitizenRecyclerAdapter;
-import com.loskon.androidprojectcitizens.ui.recyclerview.RecyclerAdapterCallback;
+import com.loskon.androidprojectcitizens.ui.recyclerview.CitizenClickListener;
 import com.loskon.androidprojectcitizens.utils.WidgetUtils;
 import com.loskon.androidprojectcitizens.viewmodel.CitizenViewModel;
 
@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * Форма списка граждан
  */
 
-public class CitizenListFragment extends Fragment implements RecyclerAdapterCallback {
+public class CitizenListFragment extends Fragment implements CitizenClickListener {
 
     private static final String ARG_EXTRA_PROGRESS = "arg_extra_progress";
     private final Bundle bundleState = new Bundle();
@@ -96,7 +96,7 @@ public class CitizenListFragment extends Fragment implements RecyclerAdapterCall
     }
 
     private void configureRecyclerAdapter() {
-        adapter.registerRecyclerAdapterCallback(this);
+        adapter.registerCitizenClickListener(this);
     }
 
     private void configureRecyclerView() {

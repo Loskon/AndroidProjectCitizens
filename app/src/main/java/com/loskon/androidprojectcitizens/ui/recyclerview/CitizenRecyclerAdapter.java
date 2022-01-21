@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CitizenRecyclerAdapter extends RecyclerView.Adapter<CitizenViewHolder> {
 
-    private RecyclerAdapterCallback callback;
+    private CitizenClickListener clickListener;
 
     private List<Citizen> list = emptyList();
 
@@ -49,7 +49,7 @@ public class CitizenRecyclerAdapter extends RecyclerView.Adapter<CitizenViewHold
     }
 
     private void onItemClick(Citizen citizen) {
-        if (callback != null) callback.onClickingItem(citizen);
+        clickListener.onClickingItem(citizen);
     }
 
     //----------------------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ public class CitizenRecyclerAdapter extends RecyclerView.Adapter<CitizenViewHold
     }
 
     //----------------------------------------------------------------------------------------------
-    public void registerRecyclerAdapterCallback(RecyclerAdapterCallback callback) {
-        this.callback = callback;
+    public void registerCitizenClickListener(CitizenClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }
