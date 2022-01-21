@@ -16,11 +16,9 @@ import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.model.Citizen;
 import com.loskon.androidprojectcitizens.service.AppService;
 import com.loskon.androidprojectcitizens.ui.fragments.CitizenFragment;
-import com.loskon.androidprojectcitizens.ui.fragments.ListCitizensFragment;
+import com.loskon.androidprojectcitizens.ui.fragments.CitizenListFragment;
 import com.loskon.androidprojectcitizens.ui.fragments.SettingsFragment;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
-import com.loskon.androidprojectcitizens.ui.recyclerview.AppRecyclerAdapter;
-import com.loskon.androidprojectcitizens.ui.recyclerview.RecyclerAdapterCallback;
 
 import java.util.ArrayList;
 
@@ -28,11 +26,11 @@ import java.util.ArrayList;
  * Хост представления для фрагментов
  */
 
-public class MainActivity extends AppCompatActivity implements RecyclerAdapterCallback {
+public class MainActivity extends AppCompatActivity {
 
     public final static String BROADCAST_ACTION = "broadcast_action";
-    public static final String ARG_EXTRA_BUNDLE_CITIZENS = "arg_extra_citizens";
-    public static final String ARG_EXTRA_SERIALIZABLE_CITIZENS = "arg_extra_serializable_citizens";
+    public final static String ARG_EXTRA_BUNDLE_CITIZENS = "arg_extra_citizens";
+    public final static String ARG_EXTRA_SERIALIZABLE_CITIZENS = "arg_extra_serializable_citizens";
 
     private WidgetsHelper widgetsHelper;
     private FragmentManager fragmentManager;
@@ -46,16 +44,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapterCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        installCallback();
         setupViewDeclaration();
         initialiseObjects();
         registerBroadcastReceiver();
         startService();
-        openCitizensListFragment(savedInstanceState);
-    }
-
-    private void installCallback() {
-        AppRecyclerAdapter.registerCallbackRecyclerAdapter(this);
+        openCitizenListFragment(savedInstanceState);
     }
 
     private void setupViewDeclaration() {
@@ -78,21 +71,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapterCa
         startService(intent);
     }
 
-    private void openCitizensListFragment(Bundle savedInstanceState) {
+    private void openCitizenListFragment(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, new ListCitizensFragment())
+                    .add(R.id.fragment_container, new CitizenListFragment())
                     .commit();
         }
     }
 
-    @Override
-    public void onClickingItem(Citizen citizen) {
-        CitizenFragment fragment = CitizenFragment.newInstance(citizen);
-        replaceFragment(fragment);
-    }
-
-    private void replaceFragment(Fragment fragment) {
+    //----------------------------------------------------------------------------------------------
+    public void replaceFragment(Fragment fragment) {
         fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
@@ -110,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapterCa
         replaceFragment(new SettingsFragment());
     }
 
+    //----------------------------------------------------------------------------------------------
     @SuppressWarnings("unchecked")
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -122,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapterCa
         }
     };
 
+    //----------------------------------------------------------------------------------------------
     @Override
     protected void onDestroy() {
         stopService();
@@ -133,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapterCa
         stopService(new Intent(this, AppService.class));
     }
 
+    //----------------------------------------------------------------------------------------------
     public WidgetsHelper getWidgetsHelper() {
         return widgetsHelper;
     }

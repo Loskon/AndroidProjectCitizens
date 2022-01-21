@@ -26,6 +26,12 @@ import com.loskon.androidprojectcitizens.ui.sheets.SettingsSheetDialog;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
+    private static SettingsCallback callback;
+
+    public static void registerSettingsCallback(SettingsCallback callback) {
+        SettingsFragment.callback = callback;
+    }
+
     public static final String TYPE_PERIOD = "type_period";
     public static final String TYPE_RANGE_MIN = "type_range_min";
     public static final String TYPE_RANGE_MAX = "type_range_max";
@@ -160,10 +166,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        bottomAppBar.setNavigationOnClickListener(null);
         savingChangedValues();
         restartingGenerator();
+        super.onDetach();
     }
 
     private void savingChangedValues() {
@@ -197,11 +204,5 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         }
 
         installValuesInWidgets();
-    }
-
-    private static SettingsCallback callback;
-
-    public static void registerCallbackSettings(SettingsCallback callback) {
-        SettingsFragment.callback = callback;
     }
 }

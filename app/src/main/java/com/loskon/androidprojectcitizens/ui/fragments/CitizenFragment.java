@@ -28,6 +28,16 @@ public class CitizenFragment extends Fragment {
 
     public static final String ARG_CITIZEN = "arg_citizen";
 
+    public static CitizenFragment newInstance(Citizen citizen) {
+        CitizenFragment fragment = new CitizenFragment();
+
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CITIZEN, citizen);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     private MainActivity activity;
     private WidgetsHelper widgetsHelper;
 
@@ -77,13 +87,10 @@ public class CitizenFragment extends Fragment {
         bottomAppBar.setNavigationOnClickListener(v -> activity.onBackPressed());
     }
 
-    public static CitizenFragment newInstance(Citizen citizen) {
-        CitizenFragment fragment = new CitizenFragment();
-
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_CITIZEN, citizen);
-        fragment.setArguments(args);
-
-        return fragment;
+    //----------------------------------------------------------------------------------------------
+    @Override
+    public void onDetach() {
+        bottomAppBar.setNavigationOnClickListener(null);
+        super.onDetach();
     }
 }

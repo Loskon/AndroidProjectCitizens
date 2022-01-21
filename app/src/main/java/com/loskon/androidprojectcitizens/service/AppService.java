@@ -25,7 +25,7 @@ public class AppService extends Service implements SettingsCallback {
     }
 
     private void installCallback() {
-        SettingsFragment.registerCallbackSettings(this);
+        SettingsFragment.registerSettingsCallback(this);
     }
 
     @Override

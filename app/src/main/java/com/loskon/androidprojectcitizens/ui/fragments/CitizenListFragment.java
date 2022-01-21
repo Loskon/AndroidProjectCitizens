@@ -27,7 +27,8 @@ import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.model.Citizen;
 import com.loskon.androidprojectcitizens.ui.activity.MainActivity;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
-import com.loskon.androidprojectcitizens.ui.recyclerview.AppRecyclerAdapter;
+import com.loskon.androidprojectcitizens.ui.recyclerview.CitizenRecyclerAdapter;
+import com.loskon.androidprojectcitizens.ui.recyclerview.RecyclerAdapterCallback;
 import com.loskon.androidprojectcitizens.utils.WidgetUtils;
 import com.loskon.androidprojectcitizens.viewmodel.CitizenViewModel;
 
@@ -37,7 +38,7 @@ import java.util.ArrayList;
  * Форма списка граждан
  */
 
-public class ListCitizensFragment extends Fragment {
+public class CitizenListFragment extends Fragment implements RecyclerAdapterCallback {
 
     private static final String ARG_EXTRA_PROGRESS = "arg_extra_progress";
     private final Bundle bundleState = new Bundle();
@@ -54,7 +55,7 @@ public class ListCitizensFragment extends Fragment {
     private FloatingActionButton fab;
     private BottomAppBar bottomAppBar;
 
-    private final AppRecyclerAdapter adapter = new AppRecyclerAdapter();
+    private final CitizenRecyclerAdapter adapter = new CitizenRecyclerAdapter();
     private final Handler handler = new Handler();
     private ArrayList<Citizen> citizens;
 
@@ -86,11 +87,16 @@ public class ListCitizensFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        configureRecyclerAdapter();
         configureRecyclerView();
         initialiseWidgets();
         configureAnimController();
         installHandlers();
         setupViewModel();
+    }
+
+    private void configureRecyclerAdapter() {
+        adapter.registerRecyclerAdapterCallback(this);
     }
 
     private void configureRecyclerView() {
@@ -111,11 +117,11 @@ public class ListCitizensFragment extends Fragment {
     }
 
     private void installHandlers() {
-        fab.setOnClickListener(v -> clickingFab());
-        bottomAppBar.setOnMenuItemClickListener(this::clickingItemMenu);
+        fab.setOnClickListener(v -> onFabClick());
+        bottomAppBar.setOnMenuItemClickListener(this::onClickMenuItem);
     }
 
-    private void clickingFab() {
+    private void onFabClick() {
         citizens = activity.getCitizens();
 
         if (citizens.size() != 0) {
@@ -162,7 +168,7 @@ public class ListCitizensFragment extends Fragment {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
 
-    private boolean clickingItemMenu(MenuItem item) {
+    private boolean onClickMenuItem(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             activity.openSettingsFragment();
             return true;
@@ -185,6 +191,7 @@ public class ListCitizensFragment extends Fragment {
         }
     }
 
+    //----------------------------------------------------------------------------------------------
     @Override
     public void onResume() {
         super.onResume();
@@ -201,15 +208,35 @@ public class ListCitizensFragment extends Fragment {
         changeVisibleIndicator(isProgressVisible);
     }
 
+    //----------------------------------------------------------------------------------------------
     @Override
     public void onPause() {
-        super.onPause();
         saveIndicatorState();
+        super.onPause();
     }
 
     private void saveIndicatorState() {
         if (layoutManager != null) {
             bundleState.putBoolean(ARG_EXTRA_PROGRESS, isProgressVisible);
         }
+    }
+
+    //----------------------------------------------------------------------------------------------
+    @Override
+    public void onDetach() {
+        nullifyListeners();
+        super.onDetach();
+    }
+
+    private void nullifyListeners() {
+        fab.setOnClickListener(null);
+        bottomAppBar.setOnMenuItemClickListener(null);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    @Override
+    public void onClickingItem(Citizen citizen) {
+        CitizenFragment fragment = CitizenFragment.newInstance(citizen);
+        activity.replaceFragment(fragment);
     }
 }

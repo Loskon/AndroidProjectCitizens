@@ -9,11 +9,11 @@ import com.loskon.androidprojectcitizens.model.Citizen;
  * Предоставление доступа View-компонентам
  */
 
-public class AppViewHolder extends RecyclerView.ViewHolder {
+public class CitizenViewHolder extends RecyclerView.ViewHolder {
 
     private final RowCitizensBinding binding;
 
-    public AppViewHolder(RowCitizensBinding binding) {
+    public CitizenViewHolder(RowCitizensBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
     }
@@ -22,5 +22,4 @@ public class AppViewHolder extends RecyclerView.ViewHolder {
         binding.setCitizen(citizen);
         binding.executePendingBindings();
     }
-
 }
