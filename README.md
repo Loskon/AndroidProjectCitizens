@@ -1,4 +1,4 @@
-# Citizens for Android (test project)  
+# Горожане (test project)  
 
 Приложение для получения сгенерированного списка граждан.
 
