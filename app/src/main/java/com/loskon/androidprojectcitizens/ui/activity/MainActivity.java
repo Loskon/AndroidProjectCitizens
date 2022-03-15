@@ -15,7 +15,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.loskon.androidprojectcitizens.R;
 import com.loskon.androidprojectcitizens.model.Citizen;
 import com.loskon.androidprojectcitizens.service.AppService;
-import com.loskon.androidprojectcitizens.ui.fragments.CitizenFragment;
 import com.loskon.androidprojectcitizens.ui.fragments.CitizenListFragment;
 import com.loskon.androidprojectcitizens.ui.fragments.SettingsFragment;
 import com.loskon.androidprojectcitizens.ui.helper.WidgetsHelper;
